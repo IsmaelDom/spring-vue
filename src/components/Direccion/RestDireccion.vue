@@ -1,5 +1,8 @@
 <template>
-<img/>
+<div class="p-field p-col-12 p-md-3">
+    <label for="minmax-buttons">Edad:</label>
+    <InputNumber v-model="value" :min="0" :max="100" class="p-inputnumber-input" id="minmax"/>
+</div>
 </template>
 
 <script>
@@ -8,7 +11,8 @@ import DireccionService from '../../services/DireccionService';
         name: 'RestDireccion',
         data() {
             return {
-                direcciones: null
+                direcciones: null,
+                value: 1
             }
         },
         direccionService: null,
