@@ -1,7 +1,36 @@
 <template>
-<div class="p-field p-col-12 p-md-3">
-    <label for="minmax-buttons">Edad:</label>
-    <InputNumber v-model="value" :min="0" :max="100" class="p-inputnumber-input" id="minmax"/>
+<div>
+    <DataTable :value="direcciones" :paginator="true" class="p-datatable-customers" :rows="10"
+        dataKey="id" :filters="filters">
+        <template #header>
+            <div class="table-header">
+                Usuarios con direcciones
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search" />
+                    <InputText v-model="filters['global']" placeholder="Buscar...." />
+                </span>
+            </div>
+        </template>
+        <template #empty>
+            No hay usuarios por mostrar.
+        </template>
+        <Column field="calle" header="Calle">
+            <template #body="slotProps">
+                {{slotProps.data.calle}}
+            </template>
+        </Column>
+        <Column header="Nombre" field="usuario.nombre" filterField="usuario.nombre" filterMatchMode="contains">
+            <template #body="slotProps">
+                <span class="image-text">{{slotProps.data.usuario.nombre}}</span>
+            </template>
+        </Column>
+    </DataTable>
+
+    <div class="p-float-label">
+        <InputNumber v-model="value" :min="0" :max="100" id="edad"/>
+        <label for="edad">Edad</label>
+    </div>
+
 </div>
 </template>
 
@@ -12,6 +41,7 @@ import DireccionService from '../../services/DireccionService';
         data() {
             return {
                 direcciones: null,
+                filters: {},
                 value: 1
             }
         },
@@ -22,9 +52,10 @@ import DireccionService from '../../services/DireccionService';
         },
 
         mounted() {
-            this.direccionService.getAll().then(data =>
-                console.log(data)
-            );
+            this.direccionService.getAll().then(data =>{
+                this.direcciones = data.data;
+                console.log(data);
+            });
         },
     }
 </script>
