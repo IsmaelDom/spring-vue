@@ -8,6 +8,8 @@ import InputText from 'primevue/inputtext';
 import Fieldset from 'primevue/fieldset';
 import Menubar from 'primevue/menubar';
 import Boton from './components/Direccion/Boton.vue';
+import Tooltip from 'primevue/tooltip';
+import Button from 'primevue/button';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -17,6 +19,7 @@ import router from './router'
 const app = createApp(App).use(router);
 
 app.use(PrimeVue);
+app.directive('tooltip', Tooltip);
 
 app.component('InputNumber', InputNumber);
 app.component('DataTable', DataTable);
@@ -25,5 +28,6 @@ app.component('InputText', InputText);
 app.component('Fieldset', Fieldset);
 app.component('Menubar', Menubar);
 app.component('Boton', Boton);
+app.component('Button', Button);
 
 app.mount('#app');
