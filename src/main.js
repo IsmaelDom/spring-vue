@@ -13,6 +13,7 @@ import Button from 'primevue/button';
 import router from './router'
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
+import Password from 'primevue/password';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -35,5 +36,6 @@ app.component('Boton', Boton);
 app.component('Button', Button);
 app.component('Card', Card);
 app.component('Panel', Panel);
+app.component('Password', Password);
 
 app.mount('#app');
