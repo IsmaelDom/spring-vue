@@ -18,6 +18,7 @@ export default {
                         {
                             label: 'Nuevo',
                             icon: 'pi pi-user-plus',
+                            to: '/registrar'
                         },
                         {
                             label: 'Editar',
