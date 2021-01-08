@@ -11,6 +11,8 @@ import Boton from './components/Direccion/Boton.vue';
 import Tooltip from 'primevue/tooltip';
 import Button from 'primevue/button';
 import router from './router'
+import Card from 'primevue/card';
+import Panel from 'primevue/panel';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -31,5 +33,7 @@ app.component('Fieldset', Fieldset);
 app.component('Menubar', Menubar);
 app.component('Boton', Boton);
 app.component('Button', Button);
+app.component('Card', Card);
+app.component('Panel', Panel);
 
 app.mount('#app');
