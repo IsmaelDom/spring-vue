@@ -1,46 +1,73 @@
 <template>
 <div>
-    <h1>Nueva Dirección</h1>
-    <div class="p-fluid p-grid p-formgrid">
-        <div class="p-field p-col-12 p-md-4">
-            <span class="p-float-label">
-                <InputText type="text" id="nombre"/>
-                <label for="nombre">Nombre:</label>
-            </span>
+    <Panel header="Insertar Usuario con Dirección" class="text-center">
+        <div class="p-fluid p-grid">
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="nombre"/>
+                    <label for="nombre">Nombre:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="apellido" />
+                    <label for="apellido">Apellido:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="correo" />
+                    <label for="correo">Correo:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-2">
+                <span class="p-float-label">
+                    <InputNumber :min="0" :max="120" id="edad" mode="decimal" showButtons/>
+                    <label for="edad">Edad:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="calle" />
+                    <label for="calle">Calle:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-2">
+                <span class="p-float-label">
+                    <InputText id="cp" type="text"/>
+                    <label for="cp">Código Postal:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="estado"/>
+                    <label for="estado">Estado:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="municipio"/>
+                    <label for="municipio">Municipio:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputNumber :min="0" id="no_exterior"/>
+                    <label for="no_exterior">No. Exterior:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-4">
+                <span class="p-float-label">
+                    <InputText type="text" id="referencia"/>
+                    <label for="referencia">Referencia:</label>
+                </span>
+            </div>
         </div>
-        <div class="p-field p-col-12 p-md-4">
-        <span class="p-float-label">
-                <InputText type="text" placeholder="Ingrese apellido"/>
-                <label for="nombre">Apellido:</label>
-            </span>
+        <div class="p-mb-2">
+            <Button type="button" label="Guardar" icon="pi pi-check" class="p-mr-2 p-mb-2" v-tooltip="'Click para guardar'" />
+            <Button type="button" label="Regresar" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip="'Click para regresar'" />
         </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese un correo" v-tooltip.bottom.focus="'Ingrese su E-mail'" />
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese edad" v-tooltip.bottom.focus="'Ingrese su edad'" />
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese calle" v-tooltip.bottom.focus="'Ingrese su calle'" />
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese su código postal"/>
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese su estado" v-tooltip.bottom.focus="'Ingrese su estado'" />
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese su municipio" v-tooltip.bottom.focus="'Ingrese su municipio'" />
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese su no. exterior"/>
-        </div>
-        <div class="p-field p-col-12 p-md-4">
-            <InputText type="text" placeholder="Ingrese una referencia"/>
-        </div>
-    </div>
-    <Button type="button" label="Guardar" icon="pi pi-check" v-tooltip="'Click para guardar'" />
-    <Button type="button" label="Regresar" icon="pi pi-check" v-tooltip="'Click para regresar'" />
+    </Panel>
 </div>
 </template>
 
@@ -48,7 +75,7 @@
 export default {
     data(){
         return{
-            
+            valor: null,
         }
     },
     
