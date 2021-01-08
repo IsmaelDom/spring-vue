@@ -11,7 +11,13 @@ export default class DireccionService{
     guardar(direccion){
         console.log("Método guardar(), direccion:");
         console.warn(direccion);
-        return axios.post(this.url, direccion);
+        return axios.post(this.url, direccion)
+                    .catch(function(error){
+                        if(error.response){
+                            console.error(error.response.headers);
+                            console.error(error.response.status);
+                        }
+                    });
     }
 
     editar(direccion){
