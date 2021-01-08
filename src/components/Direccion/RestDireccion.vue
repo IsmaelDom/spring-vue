@@ -78,7 +78,6 @@ import DireccionService from '../../service/DireccionService';
                     correo: null,
                     edad: null,
                 },
-                value: 1
             }
         },
         direccionService: null,
