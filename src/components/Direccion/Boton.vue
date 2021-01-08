@@ -1,10 +1,10 @@
 <template>
     <Menubar :model="items">
         <template #start>
-        
+            <h4>Opciones:</h4>
         </template>
         <template #end>
-        
+            
         </template>
     </Menubar>
 </template>
@@ -17,11 +17,11 @@ export default {
                 items: [
                         {
                             label: 'Nuevo',
-                            icon: 'pi pi-fw pi-video',
+                            icon: 'pi pi-user-plus',
                         },
                         {
                             label: 'Editar',
-                            icon: 'pi pi-fw pi-users',
+                            icon: 'pi pi-user-edit',
                         },
                         {
                             label: 'Eliminar',
@@ -29,7 +29,7 @@ export default {
                         },
                         {
                             label: 'Cerrar Sesión',
-                            icon: 'pi pi-fw pi-cog',
+                            icon: 'pi pi-sign-out',
                             command: () => {
                                 this.logout();
                             }
