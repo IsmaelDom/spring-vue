@@ -10,11 +10,13 @@ import Menubar from 'primevue/menubar';
 import Boton from './components/Direccion/Boton.vue';
 import Tooltip from 'primevue/tooltip';
 import Button from 'primevue/button';
+import router from './router'
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
 import 'primeicons/primeicons.css';
-import router from './router'
+import 'primeflex/primeflex.css';
+
 
 const app = createApp(App).use(router);
 
