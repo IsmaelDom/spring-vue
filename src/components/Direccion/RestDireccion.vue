@@ -64,7 +64,7 @@
 </template>
 
 <script>
-import DireccionService from '../../services/DireccionService';
+import DireccionService from '../../service/DireccionService';
     export default {
         name: 'RestDireccion',
         data() {
