@@ -1,5 +1,6 @@
 <template>
 <div>
+    <Toast position="top-left" />
     <Panel header="Insertar Usuario con Dirección">
         <div class="p-fluid p-grid">
             <div class="p-field p-col-12 p-md-4">
@@ -108,22 +109,28 @@ export default {
         save(){
             console.log(this.direccion);
             this.direccionService.guardar(this.direccion).then(data =>{
-                if (data.status === 200) {
-                    this.direccion = {
-                        calle: null,
-                        cp: null,
-                        estado: null,
-                        municipio: null,
-                        no_exterior: null,
-                        referencia: null,
-                        usuario:{
-                            nombre: null,
-                            apellido: null,
-                            password: null,
-                            correo: null,
-                            edad: null
-                        }
-                    };
+                if (data === undefined){
+                    this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
+                }else{
+                    if (data.status === 200) {
+                        this.direccion = {
+                            calle: null,
+                            cp: null,
+                            estado: null,
+                            municipio: null,
+                            no_exterior: null,
+                            referencia: null,
+                            usuario:{
+                                nombre: null,
+                                apellido: null,
+                                password: null,
+                                correo: null,
+                                edad: null
+                            }
+                        };
+                        this.$toast.add({severity: 'info', summary: 'Éxito',
+                        detail: 'Usuario Guardado Correctamente', group: 'tl', life: 3000});
+                    }
                 }
             });
         },
