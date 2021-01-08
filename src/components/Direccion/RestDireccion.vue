@@ -19,17 +19,17 @@
             <Column selectionMode="single" headerStyle="width: 3em"></Column>
             <Column header="Nombre Completo" field="usuario.nombre + ' ' + usuario.apellido" filterField="usuario.nombre, usuario.apellido" filterMatchMode="contains">
                 <template #body="slotProps">
-                    <span class="image-text">{{slotProps.data.usuario.nombre + ' ' + slotProps.data.usuario.apellido}}</span>
+                    {{slotProps.data.usuario.nombre + ' ' + slotProps.data.usuario.apellido}}
                 </template>
             </Column>
             <Column header="Correo" field="usuario.correo" filterField="usuario.correo" filterMatchMode="contains">
                 <template #body="slotProps">
-                    <span class="image-text">{{slotProps.data.usuario.correo}}</span>
+                    {{slotProps.data.usuario.correo}}
                 </template>
             </Column>
             <Column header="Edad" field="usuario.edad" filterField="usuario.edad" filterMatchMode="contains">
                 <template #body="slotProps">
-                    <span class="image-text">{{slotProps.data.usuario.edad}}</span>
+                    {{slotProps.data.usuario.edad}}
                 </template>
             </Column>
             <Column field="calle" header="Calle">
@@ -54,12 +54,6 @@
             </Column>
         </DataTable>
     </Fieldset>
-
-    <div class="p-float-label">
-        <InputNumber v-model="value" :min="0" :max="100" id="edad"/>
-        <label for="edad">Edad</label>
-    </div>
-
 </div>
 </template>
 
