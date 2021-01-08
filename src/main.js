@@ -14,6 +14,8 @@ import router from './router'
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import Password from 'primevue/password';
+import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -24,6 +26,7 @@ import 'primeflex/primeflex.css';
 const app = createApp(App).use(router);
 
 app.use(PrimeVue);
+app.use(ToastService);
 app.directive('tooltip', Tooltip);
 
 app.component('InputNumber', InputNumber);
@@ -37,5 +40,7 @@ app.component('Button', Button);
 app.component('Card', Card);
 app.component('Panel', Panel);
 app.component('Password', Password);
+app.component('ToastService', ToastService);
+app.component('Toast', Toast);
 
 app.mount('#app');
