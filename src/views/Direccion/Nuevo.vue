@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Panel header="Insertar Usuario con Dirección" class="text-center">
+    <Panel header="Insertar Usuario con Dirección">
         <div class="p-fluid p-grid">
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="p-mb-2">
-            <Button type="button" label="Guardar" @click="guardar()" icon="pi pi-check" class="p-mr-2 p-mb-2" v-tooltip.bottom="'Click para guardar'" />
+            <Button type="button" label="Guardar" @click="save()" icon="pi pi-check" class="p-mr-2 p-mb-2" v-tooltip.bottom="'Click para guardar'" />
             <Button type="button" label="Regresar" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
         </div>
     </Panel>
@@ -75,7 +75,10 @@
 </template>
 
 <script>
+import DireccionService from '../../service/DireccionService';
+
 export default {
+    name: 'Nuevo',
     data(){
         return{
             direccion: {
@@ -92,12 +95,37 @@ export default {
                         correo: null,
                         edad: null,
                     },
-                },
+            },
         }
     },
+    direccionService: null,
+
+    created() {
+        this.direccionService = new DireccionService();
+    },
+
     methods:{
-        guardar(){
+        save(){
             console.log(this.direccion);
+            this.direccionService.guardar(this.direccion).then(data =>{
+                if (data.status === 200) {
+                    this.direccion = {
+                        calle: null,
+                        cp: null,
+                        estado: null,
+                        municipio: null,
+                        no_exterior: null,
+                        referencia: null,
+                        usuario:{
+                            nombre: null,
+                            apellido: null,
+                            password: null,
+                            correo: null,
+                            edad: null
+                        }
+                    };
+                }
+            });
         },
     }
     
