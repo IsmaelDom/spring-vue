@@ -1,7 +1,9 @@
 <template>
 <div>
     <Fieldset legend="Usuarios con su dirección">
-        <Boton :id="selectedDireccion.id"></Boton>
+        <Boton :id="selectedDireccion.id"
+        :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido"></Boton>
+        
         <DataTable :value="direcciones" :paginator="true" 
         :rows="10" :filters="filters" dataKey="id" :rowHover="true" class="p-datatable-customers"
         v-model:selection="selectedDireccion">
@@ -72,18 +74,9 @@ import Boton from './Boton';
                 filters: {},
                 selectedDireccion: {
                     id: null,
-                    calle: null,
-                    cp: null,
-                    estado: null,
-                    municipio: null,
-                    no_exterior: null,
-                    referencia: null,
                     usuario:{
                         nombre: null,
                         apellido: null,
-                        password: null,
-                        correo: null,
-                        edad: null,
                     },
                 },
             }
