@@ -69,7 +69,7 @@
         </div>
         <div class="p-mb-2">
             <Button type="button" label="Guardar" @click="save()" icon="pi pi-check" class="p-mr-2 p-mb-2" v-tooltip.bottom="'Click para guardar'" />
-            <Button type="button" label="Regresar" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
+            <Button type="button" label="Regresar" @click="irMenu()" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
         </div>
     </Panel>
 </div>
@@ -112,7 +112,7 @@ export default {
                 if (data === undefined){
                     this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
                 }else{
-                    if (data.status === 200) {
+                    if (data.status === 201) {
                         this.direccion = {
                             calle: null,
                             cp: null,
@@ -133,6 +133,10 @@ export default {
                     }
                 }
             });
+        },
+
+        irMenu(){
+            this.$router.replace({name: 'Home'})
         },
     }
     

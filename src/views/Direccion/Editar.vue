@@ -69,7 +69,7 @@
         </div>
         <div class="p-mb-2">
             <Button type="button" label="Guardar" @click="save()" icon="pi pi-check" class="p-mr-2 p-mb-2" v-tooltip.bottom="'Click para guardar'" />
-            <Button type="button" label="Regresar" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
+            <Button type="button" label="Regresar" @click="irMenu()" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
         </div>
     </Panel>
 </div>
@@ -83,6 +83,7 @@ export default {
     data(){
         return{
             direccion: {
+                    id:null,
                     calle: null,
                     cp: null,
                     estado: null,
@@ -90,6 +91,7 @@ export default {
                     no_exterior: null,
                     referencia: null,
                     usuario:{
+                        id: null,
                         nombre: null,
                         apellido: null,
                         password: null,
@@ -133,6 +135,10 @@ export default {
                     }
                 }
             });
+        },
+
+        irMenu(){
+            this.$router.replace({name: 'Home'})
         },
     }
     
