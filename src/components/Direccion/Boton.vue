@@ -23,10 +23,14 @@ export default {
                         {
                             label: 'Editar',
                             icon: 'pi pi-user-edit',
+                            to: '/editar'
                         },
                         {
                             label: 'Eliminar',
                             icon: 'pi pi-fw pi-trash',
+                            command: () => {
+                                this.delete();
+                            }
                         },
                         {
                             label: 'Cerrar Sesión',
@@ -41,7 +45,15 @@ export default {
         methods: {
             logout(){
                 console.log("Método logout")
+            },
+
+            delete(){
+                console.log(this.id);
             }
+        },
+
+        props: {
+            id: null,
         }
 }
 </script>

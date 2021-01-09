@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Nuevo from '../views/Direccion/Nuevo.vue'
+import Editar from '../views/Direccion/Editar.vue'
 
 //Rutas programadas
 const routes = [
@@ -13,6 +14,11 @@ const routes = [
     path: '/registrar',//URL
     name: 'Nuevo',
     component: Nuevo
+  },
+  {
+    path: '/editar',//URL
+    name: 'Editar',
+    component: Editar
   }
 ]
 
