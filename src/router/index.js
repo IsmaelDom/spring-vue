@@ -16,7 +16,7 @@ const routes = [
     component: Nuevo
   },
   {
-    path: '/editar',//URL
+    path: '/editar/:id',//URL
     name: 'Editar',
     component: Editar
   }
