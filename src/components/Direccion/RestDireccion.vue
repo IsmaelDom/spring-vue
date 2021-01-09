@@ -1,9 +1,9 @@
 <template>
 <div>
     <Fieldset legend="Usuarios con su dirección">
-        <Boton></Boton>
+        <Boton :id="selectedDireccion.id"></Boton>
         <DataTable :value="direcciones" :paginator="true" 
-        :rows="10" :filters="filters" dataKey="data.id" :rowHover="true" class="p-datatable-customers"
+        :rows="10" :filters="filters" dataKey="id" :rowHover="true" class="p-datatable-customers"
         v-model:selection="selectedDireccion">
             <template #header>
                 <div class="table-header">
@@ -59,8 +59,13 @@
 
 <script>
 import DireccionService from '../../service/DireccionService';
+import Boton from './Boton';
+
     export default {
         name: 'RestDireccion',
+        components: {
+            Boton
+        },
         data() {
             return {
                 direcciones: null,
@@ -73,10 +78,13 @@ import DireccionService from '../../service/DireccionService';
                     municipio: null,
                     no_exterior: null,
                     referencia: null,
-                    nombre: null,
-                    apellido: null,
-                    correo: null,
-                    edad: null,
+                    usuario:{
+                        nombre: null,
+                        apellido: null,
+                        password: null,
+                        correo: null,
+                        edad: null,
+                    },
                 },
             }
         },
