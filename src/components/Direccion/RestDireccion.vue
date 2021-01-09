@@ -2,7 +2,8 @@
 <div>
     <Fieldset legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
-        :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido"></Boton>
+            :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
+        </Boton>
         
         <DataTable :value="direcciones" :paginator="true" 
         :rows="10" :filters="filters" dataKey="id" :rowHover="true" class="p-datatable-customers"
@@ -87,10 +88,16 @@ import Boton from './Boton';
         },
 
         mounted() {
-            this.direccionService.getAll().then(data =>{
-                this.direcciones = data.data;
-                console.log(this.direcciones)
-            });
+            this.getDirecciones();
+        },
+
+        methods:{
+            getDirecciones(){
+                this.direccionService.getAll().then(data =>{
+                    this.direcciones = data.data;
+                    console.log(this.direcciones)
+                });
+            }
         },
     }
 </script>
