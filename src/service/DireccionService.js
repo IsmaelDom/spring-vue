@@ -8,6 +8,11 @@ export default class DireccionService{
         return axios.get(this.url);
     }
 
+    getById(id){
+        console.log("Método getById()");
+        return axios.get(this.url + '/user/'+id);
+    }
+
     guardar(direccion){
         console.log("Método guardar(), direccion:");
         console.warn(direccion);
