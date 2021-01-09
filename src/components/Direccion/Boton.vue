@@ -5,9 +5,12 @@
         </template>
     </Menubar>
     <ConfirmDialog></ConfirmDialog>
+    <Toast />
 </template>
 
 <script>
+import DireccionService from '../../service/DireccionService';
+
 export default {
     name: 'Boton',
         data() {
@@ -39,9 +42,16 @@ export default {
                                 this.logout();
                             }
                         }
-                ]
+                ],
+                direcciones: null,
+                direccionService: null,
             }
         },
+
+        created() {
+            this.direccionService = new DireccionService();
+        },
+
         methods: {
             logout(){
                 console.log("Método logout")
@@ -56,15 +66,25 @@ export default {
                         icon: 'pi pi-info-circle',
                         acceptClass: 'p-button-danger',
                         accept: () => {
-                            this.$toast.add({severity:'info', summary: 'Info Message', detail:'Message Content', life: 3000});
-                            console.log("Acepto");
+                             this.direccionService.eliminar(this.id).then(data =>{
+                                 if (data === undefined){
+                                    this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al eliminar', life: 3000});
+                                }else{
+                                    if (data.status === 200) {
+                                       this.$toast.add({severity:'info', summary: 'Información', detail:'Usuario ' + this.nombre + ' eliminado', life: 3000}); 
+                                       this.$router.go(0);//Aplica un refresh a la pagina actual
+                                    }
+                                }
+                             });
                         },
                         reject: () => {
-                            this.$toast.add({severity:'info', summary:'Rejected', detail:'Acción cancelada', life: 3000});
+                            this.$toast.add({severity:'info', summary:'Información', detail:'Acción cancelada', life: 3000});
                             console.log("Rechazo");
                         }
                     });
-                } 
+                }else{
+                    this.$toast.add({severity:'warn', summary: 'Warn Message', detail:'Eliga un usuario primero', life: 3000});
+                }
             },
 
             update(){
@@ -72,13 +92,15 @@ export default {
                     console.log(this.id);
                     this.$router.push({name: 'Editar', params: { id: this.id }});
                 }else{
-                    console.log('Nada por hacer')
+                    console.log('Nada por hacer');
+                    this.$toast.add({severity:'warn', summary: 'Warn Message', detail:'Eliga un usuario primero', life: 3000});
                 }
             },
         },
 
         props: {
-            id: null,
+            id: Number,
+            nombre: String,
         }
 }
 </script>
