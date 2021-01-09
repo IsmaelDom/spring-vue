@@ -16,6 +16,8 @@ import Panel from 'primevue/panel';
 import Password from 'primevue/password';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+import ConfirmationService from 'primevue/confirmationservice';
+import ConfirmDialog from 'primevue/confirmdialog';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -27,6 +29,7 @@ const app = createApp(App).use(router);
 
 app.use(PrimeVue);
 app.use(ToastService);
+app.use(ConfirmationService);
 app.directive('tooltip', Tooltip);
 
 app.component('InputNumber', InputNumber);
@@ -42,5 +45,6 @@ app.component('Panel', Panel);
 app.component('Password', Password);
 app.component('ToastService', ToastService);
 app.component('Toast', Toast);
+app.component('ConfirmDialog', ConfirmDialog);
 
 app.mount('#app');
