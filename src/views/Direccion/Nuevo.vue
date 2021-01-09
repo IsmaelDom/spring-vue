@@ -129,7 +129,7 @@ export default {
                             }
                         };
                         this.$toast.add({severity: 'info', summary: 'Éxito',
-                        detail: 'Usuario Guardado Correctamente', group: 'tl', life: 3000});
+                        detail: 'Usuario Guardado Correctamente', life: 3000});
                     }
                 }
             });
