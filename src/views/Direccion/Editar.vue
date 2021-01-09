@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Toast position="top-left" />
+    <Toast />
     <Panel header="Editar Usuario con Dirección">
         <div class="p-fluid p-grid">
             <div class="p-field p-col-12 p-md-4">
@@ -140,9 +140,10 @@ export default {
                                 edad: null
                             }
                         };
-                        this.$toast.add({severity: 'info', summary: 'Éxito',
-                        detail: 'Usuario Editado Correctamente', group: 'tl', life: 3000});
-                        this.irMenu();
+                        this.$toast.add({severity: 'info', summary: 'Éxito', detail: 'Usuario Editado Correctamente'});
+                        setTimeout(() => {
+                            this.irMenu();
+                        }, 1800);
                     }
                 }
             });
