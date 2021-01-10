@@ -71,8 +71,10 @@ export default {
                                     this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al eliminar', life: 3000});
                                 }else{
                                     if (data.status === 200) {
-                                       this.$toast.add({severity:'info', summary: 'Información', detail:'Usuario ' + this.nombre + ' eliminado', life: 3000}); 
-                                       this.$router.go(0);//Aplica un refresh a la pagina actual
+                                        this.$toast.add({severity:'info', summary: 'Información', detail:'Usuario ' + this.nombre + ' eliminado', life: 3000});
+                                        setTimeout(() => {
+                                            this.refresh();
+                                        }, 1800);
                                     }
                                 }
                              });
@@ -95,6 +97,10 @@ export default {
                     console.log('Nada por hacer');
                     this.$toast.add({severity:'warn', summary: 'Warn Message', detail:'Eliga un usuario primero', life: 3000});
                 }
+            },
+
+            refresh(){
+                this.$router.go(0);
             },
         },
 
