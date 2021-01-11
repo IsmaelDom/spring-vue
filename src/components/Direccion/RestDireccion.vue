@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Fieldset legend="Usuarios con su dirección">
+    <Fieldset class="p-text-center" legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
             :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
         </Boton>
@@ -20,9 +20,14 @@
                 No hay usuarios por mostrar.
             </template>
             <Column selectionMode="single" headerStyle="width: 3em"></Column>
-            <Column header="Nombre Completo" field="usuario.nombre + ' ' + usuario.apellido" filterField="usuario.nombre, usuario.apellido" filterMatchMode="contains">
+            <Column header="Nombre" field="usuario.nombre" filterField="usuario.nombre, usuario.apellido" filterMatchMode="contains">
                 <template #body="slotProps">
-                    {{slotProps.data.usuario.nombre + ' ' + slotProps.data.usuario.apellido}}
+                    {{slotProps.data.usuario.nombre}}
+                </template>
+            </Column>
+            <Column header="Apellido" field="usuario.apellido" filterField="usuario.apellido" filterMatchMode="contains">
+                <template #body="slotProps">
+                    {{slotProps.data.usuario.apellido}}
                 </template>
             </Column>
             <Column header="Correo" field="usuario.correo" filterField="usuario.correo" filterMatchMode="contains">
