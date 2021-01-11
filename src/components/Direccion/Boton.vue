@@ -54,7 +54,7 @@ export default {
 
         methods: {
             logout(){
-                console.log("Método logout")
+                this.$router.push({name: 'Login'});
             },
 
             delete(){
