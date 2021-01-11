@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/Home.vue'
 import Nuevo from '../views/Direccion/Nuevo.vue'
 import Editar from '../views/Direccion/Editar.vue'
+import Login from '../views/Login.vue'
 
 //Rutas programadas
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: '/editar/:id',//URL
     name: 'Editar',
     component: Editar
+  },
+  {
+    path: '/login',//URL
+    name: 'Login',
+    component: Login
   }
 ]
 
