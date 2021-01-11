@@ -28,9 +28,6 @@
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-3">
-                <Password id="pass" v-model="direccion.usuario.password" placeholder="Ingrese una contraseña"/>
-            </div>
-            <div class="p-field p-col-12 p-md-3">
                 <span class="p-float-label">
                     <InputText type="text" id="calle" v-model="direccion.calle"/>
                     <label for="calle">Calle:</label>
@@ -108,9 +105,9 @@ export default {
                     },
             },
             errors: [],
+            direccionService: null,
         }
     },
-    direccionService: null,
 
     created() {
         this.direccionService = new DireccionService();
