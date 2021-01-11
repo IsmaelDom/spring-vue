@@ -9,20 +9,20 @@
                 <div class="p-field p-grid">
                     <label for="firstname" class="p-col-12 p-mb-2 p-md-3">Correo:</label>
                     <div class="p-col-12 p-md-6">
-                        <InputText id="firstname" type="text" placeholder="Ingrese un correo"/>
+                        <InputText id="firstname" type="text" v-model="usuario.correo" placeholder="Ingrese un correo"/>
                     </div>
                 </div>
                 <div class="p-field p-grid">
                     <label for="lastname" class="p-col-12 p-mb-2 p-md-3">Contraseña:</label>
                     <div class="p-col-12 p-md-6">
-                        <Password placeholder="Ingrese contraseña"/>
+                        <Password placeholder="Ingrese contraseña" v-model="usuario.password"/>
                     </div>
                 </div>
             </div>
 
         </template>
         <template #footer>
-            <Button icon="pi pi-check" label="Entrar" />
+            <Button icon="pi pi-check" @click="validaLogin()" label="Entrar" />
             <Button icon="pi pi-times" type="reset" label="Cancelar" class="p-button-danger" style="margin-left: .7em" />
         </template>
     </Card>
@@ -34,28 +34,35 @@
             <Message v-for="error of errors" :key="error.id" severity="error">{{error}}</Message>
         </template>
     </Card>
+    <Toast />
 </div>
 </template>
 
 <script>
+import DireccionService from '../service/DireccionService';
 
 export default {
     name: 'Login',
     data(){
         return{
             errors: [],
+            direccionService: null,
+            usuario:{
+                correo: null,
+                password: null,
+            },
         }
     },
     methods:{
         checkForm() {
             this.errors = [];
-            if (!this.direccion.usuario.correo || this.direccion.usuario.correo.trim().length < 1) {
+            if (!this.usuario.correo || this.usuario.correo.trim().length < 1) {
                 this.errors.push('El correo electrónico es obligatorio.');
-            } else if (!this.validEmail(this.direccion.usuario.correo)) {
+            } else if (!this.validEmail(this.usuario.correo)) {
                 this.errors.push('Ingrese un correo electrónico válido.');
             }
 
-            if (!this.direccion.usuario.password || this.direccion.usuario.password.trim().length < 1) {
+            if (!this.usuario.password || this.usuario.password.trim().length < 1) {
                 this.errors.push('La contraseña es obligatoria.');
             }
 
@@ -69,7 +76,36 @@ export default {
             return expresion.test(email);
         },
 
-    }
+        validaLogin(){
+            this.checkForm();
+            if (this.errors.length === 0) {
+                this.direccionService.login(this.usuario)
+                    .then(data =>{
+                        this.direccion = data.data;
+                        console.log(this.direccion)
+                        if (data.status === 200) {
+                            this.irMenu();
+                        }
+                    
+                    })
+                    .catch(err =>{
+                        if(err.response){                            
+                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 3000});
+                            console.error(err.response.data);
+                            console.error(err.response.status);
+                        }
+                    });
+            }
+        },
+
+        irMenu(){
+            this.$router.replace({name: 'Home'})
+        },
+    },
+
+    created() {
+        this.direccionService = new DireccionService();
+    },
 }
 </script>
 
