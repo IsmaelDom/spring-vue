@@ -18,6 +18,7 @@ import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 import ConfirmationService from 'primevue/confirmationservice';
 import ConfirmDialog from 'primevue/confirmdialog';
+import Message from 'primevue/message';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -46,5 +47,6 @@ app.component('Password', Password);
 app.component('ToastService', ToastService);
 app.component('Toast', Toast);
 app.component('ConfirmDialog', ConfirmDialog);
+app.component('Message', Message);
 
 app.mount('#app');
