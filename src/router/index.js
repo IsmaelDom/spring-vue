@@ -7,7 +7,7 @@ import Login from '../views/Login.vue'
 //Rutas programadas
 const routes = [
   {
-    path: '/',//URL
+    path: '/index',//URL
     name: 'Home',
     component: Home //Componente a usar
   },
