@@ -2,6 +2,7 @@ import axios from 'axios';
 
 export default class DireccionService{
     url = 'http://localhost:8080/direcciones/';
+    urlUser = 'http://localhost:8080/users/';
 
     getAll(){
         console.log("Método getAll()");
@@ -36,5 +37,10 @@ export default class DireccionService{
         console.log("Método eliminar(), id:");
         console.warn(id);
         return axios.delete(this.url + id);
+    }
+
+    login(usuario){
+        console.warn(usuario);
+        return axios.post(this.urlUser + 'api/login', usuario);
     }
 }
