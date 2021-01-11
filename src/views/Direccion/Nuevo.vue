@@ -1,7 +1,7 @@
 <template>
 <div>
     <Toast position="top-left" />
-    <Panel header="Insertar Usuario con Dirección">
+    <Panel class="p-text-center" header="Insertar Usuario con Dirección">
         <div class="p-fluid p-grid">
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
@@ -44,7 +44,7 @@
             </div>
             <div class="p-field p-col-12 p-md-2">
                 <span class="p-float-label">
-                    <InputNumber :min="0" id="no_exterior" mode="decimal" showButtons v-model="direccion.no_exterior"/>
+                    <InputText id="no_exterior" v-model="direccion.no_exterior"/>
                     <label for="no_exterior">No. Exterior:</label>
                 </span>
             </div>
@@ -72,6 +72,14 @@
             <Button type="button" label="Regresar" @click="irMenu()" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
         </div>
     </Panel>
+    <Card v-if="errors.length">
+        <template #title>
+            Por favor, corrija el(los) siguiente(s) error(es):
+        </template>
+        <template #content>
+            <Message v-for="error of errors" :key="error.id" severity="error">{{error}}</Message>
+        </template>
+    </Card>
 </div>
 </template>
 
@@ -97,6 +105,7 @@ export default {
                         edad: null,
                     },
             },
+            errors: [],
         }
     },
     direccionService: null,
@@ -108,7 +117,9 @@ export default {
     methods:{
         save(){
             console.log(this.direccion);
-            this.direccionService.guardar(this.direccion).then(data =>{
+            this.checkForm();
+            if (this.errors.length === 0) {
+                this.direccionService.guardar(this.direccion).then(data =>{
                 if (data === undefined){
                     this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
                 }else{
@@ -132,12 +143,70 @@ export default {
                         detail: 'Usuario Guardado Correctamente', life: 3000});
                     }
                 }
-            });
+                });
+            }
         },
 
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
+
+        checkForm() {
+            this.errors = [];
+            if (!this.direccion.usuario.nombre || this.direccion.usuario.nombre.trim().length < 1) {
+                this.errors.push('El nombre es obligatorio.');
+            }
+            if (!this.direccion.usuario.apellido || this.direccion.usuario.apellido.trim().length < 1) {
+                this.errors.push('El apellido es obligatorio.');
+            }
+            if (!this.direccion.usuario.correo || this.direccion.usuario.correo.trim().length < 1) {
+                this.errors.push('El correo electrónico es obligatorio.');
+            } else if (!this.validEmail(this.direccion.usuario.correo)) {
+                this.errors.push('Ingrese un correo electrónico válido.');
+            }
+            if (!this.direccion.usuario.edad) {
+                this.errors.push('La edad es obligatoria.');
+            }
+            if (!this.direccion.usuario.password || this.direccion.usuario.password.trim().length < 1) {
+                this.errors.push('La contraseña es obligatoria.');
+            }else if(this.direccion.usuario.password.trim().length < 5){
+                this.errors.push('La contraseña debe tener minimo 5 caracteres.');
+            }
+            if (!this.direccion.calle || this.direccion.calle.trim().length < 1) {
+                this.errors.push('La calle es obligatoria.');
+            }
+            if (!this.direccion.cp || this.direccion.cp.trim().length < 1) {
+                this.errors.push('El código postal es obligatorio.');
+            }
+            if (!this.direccion.no_exterior || this.direccion.no_exterior.trim().length < 1) {
+                this.errors.push('El número exterior es obligatorio.');
+            }else if (!this.validaNumero(this.direccion.no_exterior)){
+                this.errors.push('El número exterior debe ser un número.');
+            }
+            if (!this.direccion.estado || this.direccion.estado.trim().length < 1) {
+                this.errors.push('El estado es obligatorio.');
+            }
+            if (!this.direccion.municipio || this.direccion.municipio.trim().length < 1) {
+                this.errors.push('El municipio es obligatorio.');
+            }
+            if (!this.direccion.referencia || this.direccion.referencia.trim().length < 1) {
+                this.errors.push('La referencia es obligatoria.');
+            }
+
+            if (!this.errors.length) {
+                return true;
+            }
+        },
+
+        validEmail: function (email) {
+            var expresion = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            return expresion.test(email);
+        },
+
+        validaNumero: function (numero) {
+            var expresion = /\d/;
+            return expresion.test(numero);
+        }
     }
     
 }

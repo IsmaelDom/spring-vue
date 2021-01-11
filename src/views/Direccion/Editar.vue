@@ -72,6 +72,14 @@
             <Button type="button" label="Regresar" @click="irMenu()" icon="pi pi-arrow-left" class="p-mb-2 p-button-danger" v-tooltip.bottom="'Click para regresar'" />
         </div>
     </Panel>
+    <Card v-if="errors.length">
+        <template #title>
+            Por favor, corrija el(los) siguiente(s) error(es):
+        </template>
+        <template #content>
+            <Message v-for="error of errors" :key="error.id" severity="error">{{error}}</Message>
+        </template>
+    </Card>
 </div>
 </template>
 
@@ -99,6 +107,7 @@ export default {
                         edad: null,
                     },
             },
+            errors: [],
         }
     },
     direccionService: null,
@@ -118,40 +127,100 @@ export default {
     methods:{
         update(){
             console.log(this.direccion);
-            this.direccionService.editar(this.direccion).then(data =>{
-                if (data === undefined){
-                    this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al editar', life: 3000});
-                }else{
-                    if (data.status === 200) {
-                        this.direccion = {
-                            id: null,
-                            calle: null,
-                            cp: null,
-                            estado: null,
-                            municipio: null,
-                            no_exterior: null,
-                            referencia: null,
-                            usuario:{
+            this.checkForm();
+            if (this.errors.length === 0) {
+                    this.direccionService.editar(this.direccion).then(data =>{
+                    if (data === undefined){
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al editar', life: 3000});
+                    }else{
+                        if (data.status === 200) {
+                            this.direccion = {
                                 id: null,
-                                nombre: null,
-                                apellido: null,
-                                password: null,
-                                correo: null,
-                                edad: null
-                            }
-                        };
-                        this.$toast.add({severity: 'info', summary: 'Éxito', detail: 'Usuario Editado Correctamente'});
-                        setTimeout(() => {
-                            this.irMenu();
-                        }, 1800);
+                                calle: null,
+                                cp: null,
+                                estado: null,
+                                municipio: null,
+                                no_exterior: null,
+                                referencia: null,
+                                usuario:{
+                                    id: null,
+                                    nombre: null,
+                                    apellido: null,
+                                    password: null,
+                                    correo: null,
+                                    edad: null
+                                }
+                            };
+                            this.$toast.add({severity: 'info', summary: 'Éxito', detail: 'Usuario Editado Correctamente'});
+                            setTimeout(() => {
+                                this.irMenu();
+                            }, 1800);
+                        }
                     }
-                }
-            });
+                });
+            }
         },
 
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
+
+        checkForm() {
+            this.errors = [];
+            if (!this.direccion.usuario.nombre || this.direccion.usuario.nombre.trim().length < 1) {
+                this.errors.push('El nombre es obligatorio.');
+            }
+            if (!this.direccion.usuario.apellido || this.direccion.usuario.apellido.trim().length < 1) {
+                this.errors.push('El apellido es obligatorio.');
+            }
+            if (!this.direccion.usuario.correo || this.direccion.usuario.correo.trim().length < 1) {
+                this.errors.push('El correo electrónico es obligatorio.');
+            } else if (!this.validEmail(this.direccion.usuario.correo)) {
+                this.errors.push('Ingrese un correo electrónico válido.');
+            }
+            if (!this.direccion.usuario.edad) {
+                this.errors.push('La edad es obligatoria.');
+            }
+            if (!this.direccion.usuario.password || this.direccion.usuario.password.trim().length < 1) {
+                this.errors.push('La contraseña es obligatoria.');
+            }else if(this.direccion.usuario.password.trim().length < 5){
+                this.errors.push('La contraseña debe tener minimo 5 caracteres.');
+            }
+            if (!this.direccion.calle || this.direccion.calle.trim().length < 1) {
+                this.errors.push('La calle es obligatoria.');
+            }
+            if (!this.direccion.cp || this.direccion.cp.trim().length < 1) {
+                this.errors.push('El código postal es obligatorio.');
+            }
+            if (!this.direccion.no_exterior || this.direccion.no_exterior.trim().length < 1) {
+                this.errors.push('El número exterior es obligatorio.');
+            }else if (!this.validaNumero(this.direccion.no_exterior)){
+                this.errors.push('El número exterior debe ser un número.');
+            }
+            if (!this.direccion.estado || this.direccion.estado.trim().length < 1) {
+                this.errors.push('El estado es obligatorio.');
+            }
+            if (!this.direccion.municipio || this.direccion.municipio.trim().length < 1) {
+                this.errors.push('El municipio es obligatorio.');
+            }
+            if (!this.direccion.referencia || this.direccion.referencia.trim().length < 1) {
+                this.errors.push('La referencia es obligatoria.');
+            }
+
+            if (!this.errors.length) {
+                return true;
+            }
+        },
+
+        validEmail: function (email) {
+            var expresion = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            return expresion.test(email);
+        },
+
+        validaNumero: function (numero) {
+            var expresion = /\d/;
+            return expresion.test(numero);
+        }
     }
     
 }
