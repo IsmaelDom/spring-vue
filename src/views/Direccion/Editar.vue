@@ -23,7 +23,7 @@
             </div>
             <div class="p-field p-col-12 p-md-2">
                 <span class="p-float-label">
-                    <InputNumber :min="0" :max="120" id="edad" mode="decimal" showButtons v-model="direccion.usuario.edad"/>
+                    <InputNumber :min="0" :max="130" id="edad" mode="decimal" showButtons v-model="direccion.usuario.edad"/>
                     <label for="edad">Edad:</label>
                 </span>
             </div>
@@ -115,10 +115,16 @@ export default {
 
     mounted() {
         var id = this.$route.params.id;
-        this.direccionService.getById(id).then(data =>{
-                this.direccion = data.data;
-                console.log(this.direccion)
-            });
+        this.direccionService.getById(id)
+                .then(data =>{
+                    this.direccion = data.data;
+                    console.log(this.direccion)
+                }).catch(err =>{
+                    if(err.response){
+                        console.error(err.response.headers);
+                        console.error(err.response.status);
+                    }
+                });
     },
 
     methods:{
@@ -204,7 +210,7 @@ export default {
                 this.errors.push('La referencia es obligatoria.');
             }
 
-            if (!this.errors.length) {
+            if (!this.errors.length) {//Si no hay errores devulve un true
                 return true;
             }
         },
