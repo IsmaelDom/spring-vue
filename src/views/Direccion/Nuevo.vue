@@ -106,9 +106,9 @@ export default {
                     },
             },
             errors: [],
+            direccionService: null,
         }
     },
-    direccionService: null,
 
     created() {
         this.direccionService = new DireccionService();
@@ -200,7 +200,7 @@ export default {
 
         validEmail: function (email) {
             var expresion = /^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$/;
-            return expresion.test(email);
+            return expresion.test(email);//devuelve verdadero si encuentra una coincidencia; de lo contrario, devuelve falso.
         },
 
         validaNumero: function (numero) {

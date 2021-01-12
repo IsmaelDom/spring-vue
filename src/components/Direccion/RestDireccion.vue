@@ -85,9 +85,10 @@ import Boton from './Boton';
                         apellido: null,
                     },
                 },
+                direccionService: null,
             }
         },
-        direccionService: null,
+        
         created() {
             this.direccionService = new DireccionService();
         },
@@ -140,9 +141,6 @@ import Boton from './Boton';
                         font-weight: bold;
                     }
 
-                    .p-progressbar {
-                        margin-top: .5rem;
-                    }
                 }
             }
         }

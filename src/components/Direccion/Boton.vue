@@ -43,7 +43,6 @@ export default {
                             }
                         }
                 ],
-                direcciones: null,
                 direccionService: null,
             }
         },
@@ -90,11 +89,10 @@ export default {
             },
 
             update(){
-                if (this.id != null) {
+                if (this.id != null || this.id != undefined) {
                     console.log(this.id);
                     this.$router.push({name: 'Editar', params: { id: this.id }});
                 }else{
-                    console.log('Nada por hacer');
                     this.$toast.add({severity:'warn', summary: 'Warn Message', detail:'Eliga un usuario primero', life: 3000});
                 }
             },
