@@ -143,6 +143,12 @@ export default {
                         detail: 'Usuario Guardado Correctamente', life: 3000});
                     }
                 }
+                }).catch(err =>{
+                    if(err.response){
+                        console.error(err.response.headers);
+                        console.error(err.response.status);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
+                    }
                 });
             }
         },
