@@ -6,7 +6,7 @@
 import RestDireccion from '../components/Direccion/RestDireccion.vue'
 
 export default {
-  name: 'App',
+  name: 'Home',
   components: {
     RestDireccion
   }

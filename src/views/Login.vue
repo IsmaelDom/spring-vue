@@ -72,7 +72,7 @@ export default {
         },
 
         validEmail: function (email) {
-            var expresion = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            var expresion = /^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$/;
             return expresion.test(email);
         },
 
@@ -86,11 +86,12 @@ export default {
                         if (data.status === 200) {
                             this.irMenu();
                         }
-                    
                     })
                     .catch(err =>{
-                        if(err.response){                            
-                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 3000});
+                        if(err.response){         
+                            if (err.response.status === 404) {
+                                this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 3000});
+                            }                   
                             console.error(err.response.data);
                             console.error(err.response.status);
                         }

@@ -114,7 +114,7 @@ export default {
     },
 
     mounted() {
-        let id = this.$route.params.id;
+        var id = this.$route.params.id;
         this.direccionService.getById(id).then(data =>{
                 this.direccion = data.data;
                 console.log(this.direccion)
@@ -210,7 +210,7 @@ export default {
         },
 
         validEmail: function (email) {
-            var expresion = /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/;
+            var expresion = /^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$/;
             return expresion.test(email);
         },
 
