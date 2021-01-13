@@ -1,6 +1,6 @@
 <template>
 <div>
-    <h1>Bienvenido </h1><h2>{{currentUser.username}}</h2>
+    <h1>Bienvenido </h1><h2>{{currentUser.nombre}}</h2>
     <Fieldset class="p-text-center" legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
             :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
@@ -114,7 +114,7 @@ import Boton from './Boton';
         computed: {
             currentUser() {
                 console.log(this.$store);
-                return true;//this.$store.state.auth.user;
+                return this.$store.state.auth.user;
             }
         },
     }

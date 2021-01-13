@@ -4,6 +4,9 @@ import App from '../App.vue'
 import { auth } from './auth';
 
 const store = createStore({
+  state:{
+
+  },
     modules: {
         auth
       }
@@ -11,5 +14,5 @@ const store = createStore({
 
 const app = createApp({ App })
 
-// Install the store instance as a plugin
-app.use(store)
+app.use(store);
+export default store;
