@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 //import Vuex from 'vuex'
-//import store from './store';
+import store from './store';
 import PrimeVue from 'primevue/config';
 import InputNumber from 'primevue/inputnumber';
 import DataTable from 'primevue/datatable';
@@ -28,7 +28,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 
-const app = createApp(App).use(router);
+const app = createApp(App).use(router).use(store);
 
 app.use(PrimeVue);
 app.use(ToastService);
