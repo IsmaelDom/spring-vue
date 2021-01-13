@@ -7,14 +7,16 @@ export default class DireccionService{
 
     getAll(){
         console.log("Método getAll()");
-        headers: authHeader();
-        return axios.get(this.url);
+        return axios.get(this.url, {
+            headers: authHeader()
+        });
     }
 
     getById(id){
         console.log("Método getById()");
-        headers: authHeader();
-        return axios.get(this.url + '/user/'+id)
+        return axios.get(this.url + '/user/'+id, {
+                            headers: authHeader()
+                        })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
@@ -26,8 +28,9 @@ export default class DireccionService{
     guardar(direccion){
         console.log("Método guardar(), direccion:");
         console.warn(direccion);
-        headers: authHeader();
-        return axios.post(this.url, direccion)
+        return axios.post(this.url, direccion, {
+                            headers: authHeader()
+                    })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
@@ -40,8 +43,9 @@ export default class DireccionService{
         console.log("Método editar(), direccion:");
         console.warn(direccion);
         console.warn(direccion.id);
-        headers: authHeader();
-        return axios.put(this.url + direccion.id, direccion)
+        return axios.put(this.url + direccion.id, direccion, {
+                                headers: authHeader()
+                        })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
@@ -53,8 +57,9 @@ export default class DireccionService{
     eliminar(id){
         console.log("Método eliminar(), id:");
         console.warn(id);
-        headers: authHeader();
-        return axios.delete(this.url + id)
+        return axios.delete(this.url + id, {
+                                headers: authHeader()
+                        })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
@@ -65,8 +70,9 @@ export default class DireccionService{
 
     login(usuario){
         console.warn(usuario);
-        headers: authHeader();
-        return axios.post(this.login_url + 'login', usuario)
+        return axios.post(this.login_url + 'login', usuario, {
+                                    headers: authHeader()
+                        })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);

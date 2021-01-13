@@ -1,5 +1,7 @@
 import { createApp } from 'vue'
 import App from './App.vue'
+//import Vuex from 'vuex'
+//import store from './store';
 import PrimeVue from 'primevue/config';
 import InputNumber from 'primevue/inputnumber';
 import DataTable from 'primevue/datatable';
@@ -31,6 +33,9 @@ const app = createApp(App).use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+//app.use(Vuex);
+//app.use(store);
+
 app.directive('tooltip', Tooltip);
 
 app.component('InputNumber', InputNumber);
