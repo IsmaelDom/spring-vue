@@ -81,6 +81,9 @@ export default {
             if (this.errors.length === 0) {
                 this.direccionService.login(this.usuario)
                     .then(data =>{
+                        if (response.data.accessToken) {
+                            localStorage.setItem('user', JSON.stringify(response.data));
+                        }
                         this.direccion = data.data;
                         console.log(this.direccion)
                         if (data.status === 200) {
