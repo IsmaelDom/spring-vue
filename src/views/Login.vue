@@ -22,7 +22,7 @@
 
         </template>
         <template #footer>
-            <Button icon="pi pi-check" @click="validaLogin()" label="Entrar" />
+            <Button icon="pi pi-check" @click="handleLogin()" label="Entrar" />
             <Button icon="pi pi-times" type="reset" label="Cancelar" class="p-button-danger" style="margin-left: .7em" />
         </template>
     </Card>
@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import DireccionService from '../service/DireccionService';
+import DireccionService from '../services/DireccionService';
 
 export default {
     name: 'Login',
@@ -81,8 +81,8 @@ export default {
             if (this.errors.length === 0) {
                 this.direccionService.login(this.usuario)
                     .then(data =>{
-                        if (response.data.accessToken) {
-                            localStorage.setItem('user', JSON.stringify(response.data));
+                        if (data.accessToken) {
+                            localStorage.setItem('user', JSON.stringify(data));
                         }
                         this.direccion = data.data;
                         console.log(this.direccion)
@@ -105,10 +105,37 @@ export default {
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
+
+        handleLogin() {
+            this.$validator.validateAll().then(isValid => {
+                if (!isValid) {
+                    return;
+                }
+                if (this.usuario.correo && this.usuario.password) {
+                    this.$store.dispatch('auth/login', this.usuario).then(() => {
+                        this.irMenu();
+                    },
+                    error => {
+                        this.errors =
+                            (error.response && error.response.data && error.response.data.message) ||
+                            error.message || error.toString();
+                    });
+                }
+            });
+        },
     },
 
     created() {
         this.direccionService = new DireccionService();
+        if (this.loggedIn) {
+            this.$router.push('/index');
+        }
+    },
+
+    computed: {
+        loggedIn() {
+            return this.$store.state.auth.status.loggedIn;
+        }
     },
 }
 </script>
