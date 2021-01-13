@@ -1,5 +1,6 @@
 <template>
 <div>
+    <h1>Bienvenido </h1><h2>{{currentUser.username}}</h2>
     <Fieldset class="p-text-center" legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
             :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
@@ -66,7 +67,7 @@
 </template>
 
 <script>
-import DireccionService from '../../service/DireccionService';
+import DireccionService from '../../services/DireccionService';
 import Boton from './Boton';
 
     export default {
@@ -94,7 +95,11 @@ import Boton from './Boton';
         },
 
         mounted() {
-            this.getDirecciones();
+            if (!this.currentUser) {
+                this.$router.push('/login');
+            }else{
+                this.getDirecciones();
+            }
         },
 
         methods:{
@@ -103,6 +108,13 @@ import Boton from './Boton';
                     this.direcciones = data.data;
                     console.log(this.direcciones)
                 });
+            },
+        },
+
+        computed: {
+            currentUser() {
+                console.log(this.$store);
+                return true;//this.$store.state.auth.user;
             }
         },
     }

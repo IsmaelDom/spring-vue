@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import DireccionService from '../../service/DireccionService';
+import DireccionService from '../../services/DireccionService';
 
 export default {
     name: 'Boton',
