@@ -4,9 +4,6 @@ import App from '../App.vue'
 import { auth } from './auth';
 
 const store = createStore({
-  state:{
-
-  },
     modules: {
         auth
       }

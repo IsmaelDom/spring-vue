@@ -107,28 +107,29 @@ export default {
         },
 
         handleLogin() {
-            this.$validator.validateAll().then(isValid => {
-                if (!isValid) {
-                    return;
-                }
+            //this.$validator.validateAll().then(isValid => {
+                //if (!isValid) {
+                //    return;
+                //}
                 if (this.usuario.correo && this.usuario.password) {
-                    this.$store.dispatch('auth/login', this.usuario).then(() => {
-                        this.irMenu();
-                    },
-                    error => {
-                        this.errors =
+                        this.$store.dispatch('auth/iniciarSesion', this.usuario).then(() => {
+                            this.irMenu();
+                        },
+                        error => {
+                            /*this.errors =
                             (error.response && error.response.data && error.response.data.message) ||
-                            error.message || error.toString();
-                    });
+                            error.message || error.toString();*/
+                            console.log(error.response.data);
+                        });
                 }
-            });
+            //});
         },
     },
 
     created() {
         this.direccionService = new DireccionService();
         if (this.loggedIn) {
-            this.$router.push('/index');
+            this.irMenu();
         }
     },
 
