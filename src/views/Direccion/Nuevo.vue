@@ -110,6 +110,20 @@ export default {
         }
     },
 
+    computed: {
+        currentUser() {
+            console.log("computed:");
+            console.log(this.$store.state.auth);
+            return this.$store.state.auth.user;
+        }
+     },
+
+    mounted() {
+        if (!this.currentUser) {
+            this.$router.push('/login');
+        }
+    },
+
     created() {
         this.direccionService = new DireccionService();
     },

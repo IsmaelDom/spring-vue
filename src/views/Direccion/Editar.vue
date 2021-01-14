@@ -109,14 +109,24 @@ export default {
         }
     },
 
+    computed: {
+        currentUser() {
+            console.log("computed:");
+            console.log(this.$store.state.auth);
+            return this.$store.state.auth.user;
+        }
+    },
+
     created() {
         this.direccionService = new DireccionService();
     },
 
     mounted() {
-        var id = this.$route.params.id;
-        this.direccionService.getById(id)
-                .then(data =>{
+        if (!this.currentUser) {
+            this.$router.push('/login');
+        }else{
+            var id = this.$route.params.id;
+                this.direccionService.getById(id).then(data =>{
                     this.direccion = data.data;
                     console.log(this.direccion)
                 }).catch(err =>{
@@ -125,6 +135,7 @@ export default {
                         console.error(err.response.status);
                     }
                 });
+        }
     },
 
     methods:{

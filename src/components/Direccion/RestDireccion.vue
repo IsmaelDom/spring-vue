@@ -1,6 +1,10 @@
 <template>
 <div>
-    <h1>Bienvenido </h1><h2>{{currentUser.nombre}}</h2>
+    <div v-if="this.currentUser">
+        <h1>Bienvenido </h1>
+        <h2>{{currentUser.nombre + ' ' + currentUser.apellido}}</h2>
+    </div>
+
     <Fieldset class="p-text-center" legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
             :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
@@ -21,7 +25,7 @@
                 No hay usuarios por mostrar.
             </template>
             <Column selectionMode="single" headerStyle="width: 3em"></Column>
-            <Column header="Nombre" field="usuario.nombre" filterField="usuario.nombre, usuario.apellido" filterMatchMode="contains">
+            <Column header="Nombre" field="usuario.nombre" filterField="usuario.nombre" filterMatchMode="contains">
                 <template #body="slotProps">
                     {{slotProps.data.usuario.nombre}}
                 </template>
@@ -89,17 +93,26 @@ import Boton from './Boton';
                 direccionService: null,
             }
         },
-        
-        created() {
-            this.direccionService = new DireccionService();
+
+        computed: {
+            currentUser() {
+                console.log("computed:");
+                console.log(this.$store.state.auth);
+                return this.$store.state.auth.user;
+            }
         },
 
         mounted() {
             if (!this.currentUser) {
                 this.$router.push('/login');
             }else{
+                console.warn(this.currentUser);
                 this.getDirecciones();
             }
+        },
+        
+        created() {
+            this.direccionService = new DireccionService();
         },
 
         methods:{
@@ -110,52 +123,8 @@ import Boton from './Boton';
                 });
             },
         },
-
-        computed: {
-            currentUser() {
-                console.log(this.$store);
-                return this.$store.state.auth.user;
-            }
-        },
     }
 </script>
 
 <style>
-.p-datatable-customers .p-datatable-tbody > tr > td .p-column-title {
-    display: none;
-}
-
-@media screen and (max-width: 960px) {
-    ::v-deep(.p-datatable) {
-        &.p-datatable-customers {
-            .p-datatable-thead > tr > th,
-            .p-datatable-tfoot > tr > td {
-                display: none !important;
-            }
-
-            .p-datatable-tbody > tr {
-                border-bottom: 1px solid var(--layer-2);
-
-                > td {
-                    text-align: left;
-                    display: block;
-                    border: 0 none !important;
-                    width: 100% !important;
-                    float: left;
-                    clear: left;
-                    border: 0 none;
-
-                    .p-column-title {
-                        padding: .4rem;
-                        min-width: 30%;
-                        display: inline-block;
-                        margin: -.4rem 1rem -.4rem -.4rem;
-                        font-weight: bold;
-                    }
-
-                }
-            }
-        }
-    }
-}
 </style>
