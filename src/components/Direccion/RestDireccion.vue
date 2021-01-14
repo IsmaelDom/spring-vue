@@ -7,7 +7,7 @@
 
     <Fieldset class="p-text-center" legend="Usuarios con su dirección">
         <Boton :id="selectedDireccion.id"
-            :nombre="selectedDireccion.usuario.nombre + ' ' + selectedDireccion.usuario.apellido">
+            :fullName="selectedDireccion.fullName">
         </Boton>
         
         <DataTable :value="direcciones" :paginator="true" 
@@ -25,42 +25,37 @@
                 No hay usuarios por mostrar.
             </template>
             <Column selectionMode="single" headerStyle="width: 3em"></Column>
-            <Column header="Nombre" field="usuario.nombre" filterField="usuario.nombre" filterMatchMode="contains">
+            <Column header="Nombre" field="fullName" filterField="fullName" filterMatchMode="contains">
                 <template #body="slotProps">
-                    {{slotProps.data.usuario.nombre}}
+                    {{slotProps.data.fullName}}
                 </template>
             </Column>
-            <Column header="Apellido" field="usuario.apellido" filterField="usuario.apellido" filterMatchMode="contains">
+            <Column header="Correo" field="correo" filterField="correo" filterMatchMode="contains">
                 <template #body="slotProps">
-                    {{slotProps.data.usuario.apellido}}
+                    {{slotProps.data.correo}}
                 </template>
             </Column>
-            <Column header="Correo" field="usuario.correo" filterField="usuario.correo" filterMatchMode="contains">
+            <Column header="Edad" field="edad" filterField="edad" filterMatchMode="contains">
                 <template #body="slotProps">
-                    {{slotProps.data.usuario.correo}}
+                    {{slotProps.data.edad}}
                 </template>
             </Column>
-            <Column header="Edad" field="usuario.edad" filterField="usuario.edad" filterMatchMode="contains">
+            <Column field="fullDireccion" header="Dirección" filterField="fullDireccion" filterMatchMode="contains">
                 <template #body="slotProps">
-                    {{slotProps.data.usuario.edad}}
+                    {{slotProps.data.fullDireccion}}
                 </template>
             </Column>
-            <Column field="calle" header="Calle">
-                <template #body="slotProps">
-                    {{slotProps.data.calle}}
-                </template>
-            </Column>
-            <Column field="estado" header="Estado">
+            <Column field="estado" header="Estado" filterField="estado" filterMatchMode="contains">
                 <template #body="slotProps">
                     {{slotProps.data.estado}}
                 </template>
             </Column>
-            <Column field="municipio" header="Municipio">
+            <Column field="municipio" header="Municipio" filterField="municipio" filterMatchMode="contains">
                 <template #body="slotProps">
                     {{slotProps.data.municipio}}
                 </template>
             </Column>
-            <Column field="referencia" header="Referencia">
+            <Column field="referencia" header="Referencia" filterField="referencia" filterMatchMode="contains">
                 <template #body="slotProps">
                     {{slotProps.data.referencia}}
                 </template>
@@ -85,10 +80,7 @@ import Boton from './Boton';
                 filters: {},
                 selectedDireccion: {
                     id: null,
-                    usuario:{
-                        nombre: null,
-                        apellido: null,
-                    },
+                    fullName: null,
                 },
                 direccionService: null,
             }

@@ -211,7 +211,7 @@ export default {
             if (!this.direccion.cp || this.direccion.cp.trim().length < 1) {
                 this.errors.push('El código postal es obligatorio.');
             }
-            if (!this.direccion.no_exterior || this.direccion.no_exterior.trim().length < 1) {
+            if (!this.direccion.no_exterior) {
                 this.errors.push('El número exterior es obligatorio.');
             }else if (!this.validaNumero(this.direccion.no_exterior)){
                 this.errors.push('El número exterior debe ser un número.');

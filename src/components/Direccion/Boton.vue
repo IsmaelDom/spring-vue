@@ -119,7 +119,7 @@ export default {
 
         props: {
             id: Number,
-            nombre: String,
+            fullName: String,
         }
 }
 </script>
