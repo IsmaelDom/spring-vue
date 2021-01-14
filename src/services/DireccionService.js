@@ -68,11 +68,16 @@ export default class DireccionService{
                     });
     }
 
-    login(usuario){
-        console.warn(usuario);
-        return axios.post(this.login_url + 'login', usuario, {
-                                    headers: authHeader()
-                        })
+    login(user){
+        console.warn(user);
+        return axios.post(this.login_url + 'login', user)
+                        /*.then(response => {
+                            if (response.data.accessToken) {
+                              localStorage.setItem('user', JSON.stringify(response.data));
+                            }
+                    
+                            return response.data;
+                          })*/
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
