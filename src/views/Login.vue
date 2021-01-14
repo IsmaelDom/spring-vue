@@ -127,8 +127,8 @@ export default {
     },
 
     created() {
-        this.direccionService = new DireccionService();
         if (this.loggedIn) {
+            this.direccionService = new DireccionService();
             this.irMenu();
         }
     },
