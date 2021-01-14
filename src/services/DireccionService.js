@@ -1,20 +1,19 @@
 import axios from 'axios';
 import authHeader from './Header';
 
+const URL = 'http://localhost:8080/direcciones/';
+const LOGIN_URL = 'http://localhost:8080/auth/';
 export default class DireccionService{
-    url = 'http://localhost:8080/direcciones/';
-    login_url = 'http://localhost:8080/auth/';
-
     getAll(){
         console.log("Método getAll()");
-        return axios.get(this.url, {
+        return axios.get(URL, {
             headers: authHeader()
         });
     }
 
     getById(id){
         console.log("Método getById()");
-        return axios.get(this.url + '/user/'+id, {
+        return axios.get(URL + 'user/' + id, {
                             headers: authHeader()
                         })
                     .catch(function(error){
@@ -28,7 +27,7 @@ export default class DireccionService{
     guardar(direccion){
         console.log("Método guardar(), direccion:");
         console.warn(direccion);
-        return axios.post(this.url, direccion, {
+        return axios.post(URL, direccion, {
                             headers: authHeader()
                     })
                     .catch(function(error){
@@ -43,7 +42,7 @@ export default class DireccionService{
         console.log("Método editar(), direccion:");
         console.warn(direccion);
         console.warn(direccion.id);
-        return axios.put(this.url + direccion.id, direccion, {
+        return axios.put(URL + direccion.id, direccion, {
                                 headers: authHeader()
                         })
                     .catch(function(error){
@@ -57,7 +56,7 @@ export default class DireccionService{
     eliminar(id){
         console.log("Método eliminar(), id:");
         console.warn(id);
-        return axios.delete(this.url + id, {
+        return axios.delete(URL + id, {
                                 headers: authHeader()
                         })
                     .catch(function(error){
@@ -70,14 +69,14 @@ export default class DireccionService{
 
     login(user){
         console.warn(user);
-        return axios.post(this.login_url + 'login', user)
-                        /*.then(response => {
+        return axios.post(LOGIN_URL + 'login', user)
+                        .then(response => {
                             if (response.data.accessToken) {
                               localStorage.setItem('user', JSON.stringify(response.data));
                             }
                     
                             return response.data;
-                          })*/
+                          })
                     .catch(function(error){
                         if(error.response){
                             console.error(error.response.headers);
