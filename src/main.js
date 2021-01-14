@@ -28,7 +28,7 @@ import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
 
 
-const app = createApp(App).use(router).use(store);
+const app = createApp(App).use(store).use(router);
 
 app.use(PrimeVue);
 app.use(ToastService);
