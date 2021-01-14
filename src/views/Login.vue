@@ -112,7 +112,7 @@ export default {
                 //    return;
                 //}
                 if (this.usuario.correo && this.usuario.password) {
-                        this.$store.dispatch('auth/iniciarSesion', this.usuario).then(() => {
+                        this.$store.dispatch('auth/login', this.usuario).then(() => {
                             this.irMenu();
                         },
                         error => {
