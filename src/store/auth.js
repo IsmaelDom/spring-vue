@@ -9,7 +9,8 @@ export const auth = {
   namespaced: true,
   state: initialState,
   actions: {
-        iniciarSesion({ commit }, user) {
+        login({ commit }, user) {
+            console.log(user);
             return service.login(user)
             .then(user => {
                     commit('loginSuccess', user);
