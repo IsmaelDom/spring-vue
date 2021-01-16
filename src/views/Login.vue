@@ -46,6 +46,7 @@ export default {
     data(){
         return{
             errors: [],
+            error: [],
             direccionService: null,
             usuario:{
                 correo: null,
@@ -116,10 +117,12 @@ export default {
                             this.irMenu();
                         },
                         error => {
-                            /*this.errors =
+                            this.error =
                             (error.response && error.response.data && error.response.data.message) ||
-                            error.message || error.toString();*/
-                            console.log(error.response.data);
+                            error.message || error.toString();
+                            console.log(this.error);
+                            console.log(error.message);
+                            this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
                         });
                 }
             //});
