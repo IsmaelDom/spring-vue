@@ -173,62 +173,8 @@ export default {
 
         checkForm() {
             this.errors = [];
-            if (!this.direccion.usuario.nombre || this.direccion.usuario.nombre.trim().length < 1) {
-                this.errors.push('El nombre es obligatorio.');
-            }
-            if (!this.direccion.usuario.apellido || this.direccion.usuario.apellido.trim().length < 1) {
-                this.errors.push('El apellido es obligatorio.');
-            }
-            if (!this.direccion.usuario.correo || this.direccion.usuario.correo.trim().length < 1) {
-                this.errors.push('El correo electrónico es obligatorio.');
-            } else if (!this.validEmail(this.direccion.usuario.correo)) {
-                this.errors.push('Ingrese un correo electrónico válido.');
-            }
-            if (!this.direccion.usuario.edad) {
-                this.errors.push('La edad es obligatoria.');
-            }
-            if (!this.direccion.usuario.password || this.direccion.usuario.password.trim().length < 1) {
-                this.errors.push('La contraseña es obligatoria.');
-            }else if(this.direccion.usuario.password.trim().length < 5){
-                this.errors.push('La contraseña debe tener minimo 5 caracteres.');
-            }
-            if (!this.direccion.calle || this.direccion.calle.trim().length < 1) {
-                this.errors.push('La calle es obligatoria.');
-            }
-            if (!this.direccion.cp || this.direccion.cp.trim().length < 1) {
-                this.errors.push('El código postal es obligatorio.');
-            }
-            if (!this.direccion.no_exterior || this.direccion.no_exterior.trim().length < 1) {
-                this.errors.push('El número exterior es obligatorio.');
-            }else if (!this.validaNumero(this.direccion.no_exterior)){
-                this.errors.push('El número exterior debe ser un número.');
-            }
-            if (!this.direccion.estado || this.direccion.estado.trim().length < 1) {
-                this.errors.push('El estado es obligatorio.');
-            }
-            if (!this.direccion.municipio || this.direccion.municipio.trim().length < 1) {
-                this.errors.push('El municipio es obligatorio.');
-            }
-            if (!this.direccion.referencia || this.direccion.referencia.trim().length < 1) {
-                this.errors.push('La referencia es obligatoria.');
-            }
-
-            if (!this.errors.length) {
-                return true;
-            }
-        },
-
-        validEmail: function (email) {
-            var expresion = /^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$/;
-            return expresion.test(email);//devuelve verdadero si encuentra una coincidencia; de lo contrario, devuelve falso.
-        },
-
-        validaNumero: function (numero) {
-            var expresion = /\d/;
-            return expresion.test(numero);
         }
     }
-    
 }
 </script>
 
