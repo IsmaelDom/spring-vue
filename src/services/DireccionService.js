@@ -66,26 +66,4 @@ export default class DireccionService{
                         }
                     });
     }
-
-    login(user){
-        console.warn(user);
-        return axios.post(LOGIN_URL + 'login', user)
-                        .then(response => {
-                            if (response.data.accessToken) {
-                              localStorage.setItem('user', JSON.stringify(response.data));
-                            }
-                    
-                            return response.data;
-                          })
-                    .catch(function(error){
-                        if(error.response){
-                            console.error(error.response.headers);
-                            console.error(error.response.status);
-                        }
-                    });
-    }
-
-    logout() {
-        localStorage.removeItem('user');
-    }
 }
