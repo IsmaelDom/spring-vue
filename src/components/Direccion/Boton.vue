@@ -36,28 +36,17 @@ export default {
                             }
                         },
                         {
-                            label: 'Cerrar Sesión',
-                            icon: 'pi pi-sign-out',
-                            command: () => {
-                                this.logout();
-                            }
+                            label: this.usuarioLogeado(), icon: 'pi pi-user',
+                            items: [{           
+                                    label: 'Cerrar Sesión',
+                                    icon: 'pi pi-sign-out',
+                                    command: () => {
+                                        this.logout();
+                                    }
+                            }],
                         }
                 ],
                 direccionService: null,
-            }
-        },
-
-        computed: {
-            currentUser() {
-                console.log("computed:");
-                console.log(this.$store.state.auth);
-                return this.$store.state.auth.user;
-            }
-        },
-
-        mounted() {
-            if (!this.currentUser) {
-                this.$router.push('/login');
             }
         },
 
@@ -69,6 +58,10 @@ export default {
             logout(){
                 this.$store.dispatch('auth/logout');
                 this.$router.push({name: 'Login'});
+            },
+
+            usuarioLogeado(){
+                return this.$store.state.auth.user.nombre + ' ' + this.$store.state.auth.user.apellido;
             },
 
             delete(){
