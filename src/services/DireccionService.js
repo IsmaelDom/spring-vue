@@ -2,7 +2,6 @@ import axios from 'axios';
 import authHeader from './Header';
 
 const URL = 'http://localhost:8080/direcciones/';
-const LOGIN_URL = 'http://localhost:8080/auth/';
 export default class DireccionService{
     getAll(){
         console.log("Método getAll()");
