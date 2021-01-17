@@ -7,15 +7,17 @@
         <template #content>
             <div class="p-fluid">
                 <div class="p-field p-grid">
-                    <label for="firstname" class="p-col-12 p-mb-2 p-md-3">Correo:</label>
+                    <label for="correo" class="p-col-12 p-mb-2 p-md-3">Correo:</label>
                     <div class="p-col-12 p-md-6">
-                        <InputText id="firstname" type="text" v-model="usuario.correo" placeholder="Ingrese un correo"/>
+                        <InputText id="correo" type="text" v-model="usuario.correo" placeholder="Ingrese un correo" class="p-invalid" autofocus />
+                        <InlineMessage v-if="correoError.length">{{correoError}}</InlineMessage>
                     </div>
                 </div>
-                <div class="p-field p-grid">
-                    <label for="lastname" class="p-col-12 p-mb-2 p-md-3">Contraseña:</label>
+                <div class="p-field p-grid p-formgroup-inline" style="margin-bottom:.5rem">
+                    <label for="password" class="p-col-12 p-mb-2 p-md-3">Contraseña:</label>
                     <div class="p-col-12 p-md-6">
-                        <Password placeholder="Ingrese contraseña" v-model="usuario.password"/>
+                        <Password id="password" placeholder="Ingrese contraseña" v-model="usuario.password" class="p-invalid"/>
+                        <InlineMessage v-if="passwordError.length">{{passwordError}}</InlineMessage>
                     </div>
                 </div>
             </div>
@@ -23,7 +25,7 @@
         </template>
         <template #footer>
             <Button icon="pi pi-check" @click="handleLogin()" label="Entrar" />
-            <Button icon="pi pi-times" type="reset" label="Cancelar" class="p-button-danger" style="margin-left: .7em" />
+            <Button icon="pi pi-times" @click="limpiar()" label="Cancelar" class="p-button-danger" style="margin-left: .7em" />
         </template>
     </Card>
     <Card v-if="errors.length">
@@ -31,7 +33,9 @@
             Por favor, corrija el(los) siguiente(s) error(es):
         </template>
         <template #content>
-            <Message v-for="error of errors" :key="error.id" severity="error">{{error}}</Message>
+            <div v-for="error of errors" :key="error.id">
+                <Message severity="error">{{error}}</Message>
+            </div>
         </template>
     </Card>
     <Toast />
@@ -46,6 +50,8 @@ export default {
     data(){
         return{
             errors: [],
+            correoError: [],
+            passwordError: [],
             error: [],
             direccionService: null,
             usuario:{
@@ -77,55 +83,51 @@ export default {
             return expresion.test(email);
         },
 
-        validaLogin(){
-            this.checkForm();
-            if (this.errors.length === 0) {
-                this.direccionService.login(this.usuario)
-                    .then(data =>{
-                        if (data.accessToken) {
-                            localStorage.setItem('user', JSON.stringify(data));
-                        }
-                        this.direccion = data.data;
-                        console.log(this.direccion)
-                        if (data.status === 200) {
-                            this.irMenu();
-                        }
-                    })
-                    .catch(err =>{
-                        if(err.response){         
-                            if (err.response.status === 404) {
-                                this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 3000});
-                            }                   
-                            console.error(err.response.data);
-                            console.error(err.response.status);
-                        }
-                    });
-            }
-        },
-
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
 
         handleLogin() {
-            //this.$validator.validateAll().then(isValid => {
-                //if (!isValid) {
-                //    return;
-                //}
-                if (this.usuario.correo && this.usuario.password) {
-                        this.$store.dispatch('auth/login', this.usuario).then(() => {
-                            this.irMenu();
-                        },
-                        error => {
-                            this.error =
-                            (error.response && error.response.data && error.response.data.message) ||
-                            error.message || error.toString();
-                            console.log(this.error);
-                            console.log(error.message);
-                            this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
-                        });
-                }
-            //});
+            //if (this.usuario.correo && this.usuario.password) {
+                this.$store.dispatch('auth/login', this.usuario).then(() => {
+                    this.irMenu();
+                },
+                error => {
+                    this.error =
+                    (error.response && error.response.data && error.response.data.message) ||
+                    error.message || error.toString();
+                    console.log(this.error);
+                    console.log(error.response);
+                    console.log(error.message);
+                    if (error.response === undefined) {
+                        this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
+                    }else{
+                        if (error.response.status === 404) {
+                            this.correoError = [];
+                            this.passwordError = [];
+                            if (error.response.data.correo) {
+                                this.correoError = error.response.data.correo;
+                            }
+                            if (error.response.data.contraseña) {
+                            this.passwordError = error.response.data.contraseña;
+                            }
+                        }
+
+                        if (error.response.status === 401) {
+                            this.correoError = [];
+                            this.passwordError = [];
+                            if (error.response.data.error) {
+                                this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.error, life: 4000});
+                            }
+                        }
+                    }
+                });
+            //}
+        },
+
+        limpiar(){
+            this.usuario.correo= null;
+            this.usuario.password= null;
         },
     },
 
@@ -144,4 +146,6 @@ export default {
 }
 </script>
 
-<style></style>
+<style>
+
+</style>
