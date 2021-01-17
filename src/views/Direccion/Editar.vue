@@ -125,15 +125,34 @@ export default {
         if (!this.currentUser) {
             this.$router.push('/login');
         }else{
-            var id = this.$route.params.id;
+            let id = this.$route.params.id;
                 this.direccionService.getById(id).then(data =>{
                     this.direccion = data.data;
                     console.log(this.direccion)
                 }).catch(err =>{
-                    if(err.response){
-                        console.error(err.response.headers);
+                    if (err.response) {
+                        console.error(err.response);
                         console.error(err.response.status);
+                        if (err.response.status === 404) {
+                            if (err.response.data.mensaje) {
+                                this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 3000});
+                                setTimeout(() => {
+                                    this.irMenu();
+                                }, 1800);
+                            }
+                        }
+                        if (err.response.status === 400) {
+                            if (err.response.data.error) {
+                                this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.error, life: 3000});
+                                setTimeout(() => {
+                                    this.irMenu();
+                                }, 1800);
+                            }
+                        }
+                    }else{
+                        this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
                     }
+                    
                 });
         }
     },
