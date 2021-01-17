@@ -14,13 +14,7 @@ export default class DireccionService{
         console.log("Método getById()");
         return axios.get(URL + 'user/' + id, {
                             headers: authHeader()
-                        })
-                    .catch(function(error){
-                        if(error.response){
-                            console.error(error.response.headers);
-                            console.error(error.response.status);
-                        }
-                    });
+        });
     }
 
     guardar(direccion){
@@ -28,13 +22,7 @@ export default class DireccionService{
         console.warn(direccion);
         return axios.post(URL, direccion, {
                             headers: authHeader()
-                    })
-                    .catch(function(error){
-                        if(error.response){
-                            console.error(error.response.headers);
-                            console.error(error.response.status);
-                        }
-                    });
+        });
     }
 
     editar(direccion){
@@ -43,13 +31,7 @@ export default class DireccionService{
         console.warn(direccion.id);
         return axios.put(URL + direccion.id, direccion, {
                                 headers: authHeader()
-                        })
-                    .catch(function(error){
-                        if(error.response){
-                            console.error(error.response.headers);
-                            console.error(error.response.status);
-                        }
-                    });
+        });
     }
 
     eliminar(id){
@@ -57,12 +39,7 @@ export default class DireccionService{
         console.warn(id);
         return axios.delete(URL + id, {
                                 headers: authHeader()
-                        })
-                    .catch(function(error){
-                        if(error.response){
-                            console.error(error.response.headers);
-                            console.error(error.response.status);
-                        }
-                    });
+
+        });
     }
 }
