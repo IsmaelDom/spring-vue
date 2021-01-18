@@ -3,22 +3,28 @@
     <Toast position="top-left" />
     <Panel class="p-text-center" header="Insertar Usuario con Dirección">
         <div class="p-fluid p-grid">
-            <div class="p-field p-col-12 p-md-4">
+            <div class="p-field p-col-12 p-md-3">
                 <span class="p-float-label">
                     <InputText type="text" id="nombre" v-model="direccion.usuario.nombre"/>
                     <label for="nombre">Nombre:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-4">
+            <div class="p-field p-col-12 p-md-3">
                 <span class="p-float-label">
                     <InputText type="text" id="apellido" v-model="direccion.usuario.apellido"/>
                     <label for="apellido">Apellido:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-4">
+            <div class="p-field p-col-12 p-md-3">
                 <span class="p-float-label">
                     <InputText type="text" id="correo" v-model="direccion.usuario.correo"/>
                     <label for="correo">Correo:</label>
+                </span>
+            </div>
+            <div class="p-field p-col-12 p-md-3">
+                <span class="p-float-label">
+                    <InputText type="text" class="p-text-uppercase" id="curp" v-model="direccion.usuario.curp"/>
+                    <label for="curp">CURP:</label>
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-2">
@@ -104,6 +110,7 @@ export default {
                         password: null,
                         correo: null,
                         edad: null,
+                        curp: null,
                     },
             },
             errors: [],

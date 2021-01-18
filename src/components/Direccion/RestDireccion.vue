@@ -40,6 +40,11 @@
                     {{slotProps.data.edad}}
                 </template>
             </Column>
+            <Column header="CURP" field="curp" filterField="curp" filterMatchMode="contains">
+                <template #body="slotProps">
+                    {{slotProps.data.curp}}
+                </template>
+            </Column>
             <Column field="fullDireccion" header="Dirección" filterField="fullDireccion" filterMatchMode="contains">
                 <template #body="slotProps">
                     {{slotProps.data.fullDireccion}}

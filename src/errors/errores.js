@@ -35,6 +35,9 @@ export default class Errores{
         if (error.nombre) {
             this.errors.push(error.nombre);
         }
+        if (error.curp) {
+            this.errors.push(error.curp);
+        }
         return this.errors;
     }
 }
