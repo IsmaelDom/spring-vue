@@ -62,7 +62,7 @@ export default {
 
             usuarioLogeado(){
                 if (this.$store.state.auth.user) {
-                    return this.$store.state.auth.user.nombre + ' ' + this.$store.state.auth.user.apellido;                    
+                    return this.$store.state.auth.user.correo;                    
                 }
             },
 
@@ -76,17 +76,23 @@ export default {
                         acceptClass: 'p-button-danger',
                         accept: () => {
                              this.direccionService.eliminar(this.id).then(data =>{
-                                 if (data === undefined){
-                                    this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al eliminar', life: 3000});
-                                }else{
-                                    if (data.status === 200) {
-                                        this.$toast.add({severity:'info', summary: 'Información', detail:'Usuario ' + this.nombre + ' eliminado', life: 3000});
-                                        setTimeout(() => {
-                                            this.refresh();
-                                        }, 1800);
-                                    }
+                                if (data.status === 200) {
+                                    this.$toast.add({severity:'info', summary: 'Información', detail:data.data.mensaje, life: 3000});
+                                    setTimeout(() => {
+                                        this.refresh();
+                                    }, 1800);
                                 }
-                             });
+                             }).catch(error => {
+                                if(error.response){
+                                    if (error.response.status) {
+                                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.mensaje, life: 4000});
+                                    }else{
+                                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                                    }
+                                }else{
+                                    this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
+                                }
+                            });
                         },
                         reject: () => {
                             this.$toast.add({severity:'info', summary:'Información', detail:'Acción cancelada', life: 3000});
@@ -114,7 +120,7 @@ export default {
 
         props: {
             id: Number,
-            fullName: String,
+            //fullName: String,
         }
 }
 </script>
