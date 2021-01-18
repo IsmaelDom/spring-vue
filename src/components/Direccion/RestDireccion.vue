@@ -1,14 +1,14 @@
 <template>
 <div>
-    <div v-if="this.currentUser">
+    <div v-if="this.currentUser" class="p-text-right">
         <h1>Bienvenido </h1>
         <h2>{{currentUser.nombre + ' ' + currentUser.apellido}}</h2>
     </div>
 
     <Fieldset class="p-text-center" legend="Usuarios con su dirección">
-        <Boton :id="selectedDireccion.id"
-            :fullName="selectedDireccion.fullName">
-        </Boton>
+        <Boton 
+            :id="selectedDireccion.id"
+        />
         
         <DataTable :value="direcciones" :paginator="true" 
         :rows="10" :filters="filters" dataKey="id" :rowHover="true" class="p-datatable-customers"
@@ -80,7 +80,7 @@ import Boton from './Boton';
                 filters: {},
                 selectedDireccion: {
                     id: null,
-                    fullName: null,
+                    //fullName: null,
                 },
                 direccionService: null,
             }
@@ -111,7 +111,8 @@ import Boton from './Boton';
             getDirecciones(){
                 this.direccionService.getAll().then(data =>{
                     this.direcciones = data.data;
-                    console.log(this.direcciones)
+                }).catch(error =>{
+                    this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
                 });
             },
         },
