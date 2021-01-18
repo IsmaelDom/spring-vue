@@ -61,7 +61,9 @@ export default {
             },
 
             usuarioLogeado(){
-                return this.$store.state.auth.user.nombre + ' ' + this.$store.state.auth.user.apellido;
+                if (this.$store.state.auth.user) {
+                    return this.$store.state.auth.user.nombre + ' ' + this.$store.state.auth.user.apellido;                    
+                }
             },
 
             delete(){
