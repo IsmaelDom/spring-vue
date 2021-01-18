@@ -117,8 +117,17 @@ import Boton from './Boton';
                 this.direccionService.getAll().then(data =>{
                     this.direcciones = data.data;
                 }).catch(error =>{
+                    console.error(error.response.status);
+                    if (error.response.status === 401) {
+                        this.logout();
+                    }
                     this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
                 });
+            },
+
+            logout(){
+                this.$store.dispatch('auth/logout');
+                this.$router.push({name: 'Login'});
             },
         },
     }
