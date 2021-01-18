@@ -130,41 +130,37 @@ export default {
 
     methods:{
         save(){
-            console.log(this.direccion);
-            this.checkForm();
-            if (this.errors.length === 0) {
-                this.direccionService.guardar(this.direccion).then(data =>{
-                if (data === undefined){
-                    this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
-                }else{
-                    if (data.status === 201) {
-                        this.direccion = {
-                            calle: null,
-                            cp: null,
-                            estado: null,
-                            municipio: null,
-                            no_exterior: null,
-                            referencia: null,
-                            usuario:{
-                                nombre: null,
-                                apellido: null,
-                                password: null,
-                                correo: null,
-                                edad: null
-                            }
-                        };
-                        this.$toast.add({severity: 'info', summary: 'Éxito',
-                        detail: 'Usuario Guardado Correctamente', life: 3000});
-                    }
-                }
-                }).catch(err =>{
+            //if (this.errors.length === 0) {
+            this.direccionService.guardar(this.direccion).then(data =>{
+                if (data.status === 201) {
+                    this.direccion = {
+                        calle: null,
+                        cp: null,
+                        estado: null,
+                        municipio: null,
+                        no_exterior: null,
+                        referencia: null,
+                        usuario:{
+                            nombre: null,
+                            apellido: null,
+                            password: null,
+                            correo: null,
+                            edad: null
+                        }
+                    };
+                    this.$toast.add({severity: 'info', summary: 'Éxito',detail: data.data.exito, life: 3000});
+                }  
+            }).catch(err =>{
                     if(err.response){
+                        if (err.response.status === 404) {
+                            this.errors = err.response.data;
+                        }
                         console.error(err.response.headers);
                         console.error(err.response.status);
-                        this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
+                        //this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
                     }
                 });
-            }
+            //}
         },
 
         irMenu(){
