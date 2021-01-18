@@ -44,7 +44,7 @@
             </div>
             <div class="p-field p-col-12 p-md-2">
                 <span class="p-float-label">
-                    <InputText id="no_exterior" v-model="direccion.no_exterior"/>
+                    <InputNumber :min="0" id="no_exterior" mode="decimal" showButtons v-model="direccion.no_exterior"/>
                     <label for="no_exterior">No. Exterior:</label>
                 </span>
             </div>
@@ -85,6 +85,7 @@
 
 <script>
 import DireccionService from '../../services/DireccionService';
+import Errores from '../../errors/errores.js';
 
 export default {
     name: 'Nuevo',
@@ -107,6 +108,7 @@ export default {
             },
             errors: [],
             direccionService: null,
+            errores: null,
         }
     },
 
@@ -126,6 +128,7 @@ export default {
 
     created() {
         this.direccionService = new DireccionService();
+        this.errores = new Errores();
     },
 
     methods:{
@@ -148,16 +151,22 @@ export default {
                             edad: null
                         }
                     };
+                    this.errors = [];
                     this.$toast.add({severity: 'info', summary: 'Éxito',detail: data.data.exito, life: 3000});
                 }  
             }).catch(err =>{
+                    this.errors = [];
                     if(err.response){
                         if (err.response.status === 404) {
-                            this.errors = err.response.data;
+                            this.errors = this.errores.checkForm(err.response.data);
+                        }else{
+                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 4000});
                         }
                         console.error(err.response.headers);
                         console.error(err.response.status);
                         //this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
+                    }else{
+                        this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
                     }
                 });
             //}

@@ -82,6 +82,7 @@
 
 <script>
 import DireccionService from '../../services/DireccionService';
+import Errores from '../../errors/errores.js';
 
 export default {
     name: 'Editar',
@@ -106,6 +107,7 @@ export default {
             },
             errors: [],
             direccionService: null,
+            errores: null,
         }
     },
 
@@ -119,6 +121,7 @@ export default {
 
     created() {
         this.direccionService = new DireccionService();
+        this.errores = new Errores();
     },
 
     mounted() {
@@ -140,14 +143,18 @@ export default {
                                     this.irMenu();
                                 }, 1800);
                             }
-                        }
-                        if (err.response.status === 400) {
+                        }else if (err.response.status === 400) {
                             if (err.response.data.error) {
                                 this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.error, life: 3000});
                                 setTimeout(() => {
                                     this.irMenu();
                                 }, 1800);
                             }
+                        }else{
+                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 3000});
+                            setTimeout(() => {
+                                this.irMenu();
+                            }, 1800);
                         }
                     }else{
                         this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
@@ -180,6 +187,7 @@ export default {
                             edad: null
                         }
                     };
+                    this.errors = [];
                     console.log(data);
                     this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
                     setTimeout(() => {
@@ -187,15 +195,20 @@ export default {
                     }, 1800);
                 }
             }).catch(err =>{
+                this.errors = [];
                 if(err.response){
                     if (err.response.status === 404) {
                         this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 4000});
-                    }
-                    if (err.response.status === 400) {
-                        this.errors.push(err.response.data.correo);
+                    }else if (err.response.status === 400) {
+                        console.log(err.response.data);
+                        this.errors = this.errores.checkForm(err.response.data);
+                    }else{
+                        this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 4000});
                     }
                     console.error(err.response.headers);
                     console.error(err.response.status);
+                }else{
+                    this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
                 }
             });
             //}
@@ -205,9 +218,6 @@ export default {
             this.$router.replace({name: 'Home'})
         },
 
-        checkForm() {
-            this.errors = [];
-        }
     }
     
 }
