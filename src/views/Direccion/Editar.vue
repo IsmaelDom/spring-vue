@@ -27,13 +27,13 @@
                     <label for="edad">Edad:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-3">
+            <div class="p-field p-col-12 p-md-5">
                 <span class="p-float-label">
                     <InputText type="text" id="calle" v-model="direccion.calle"/>
                     <label for="calle">Calle:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-2">
+            <div class="p-field p-col-12 p-md-3">
                 <span class="p-float-label">
                     <InputText id="cp" type="text" v-model="direccion.cp"/>
                     <label for="cp">Código Postal:</label>
@@ -159,44 +159,46 @@ export default {
 
     methods:{
         update(){
-            console.log(this.direccion);
-            this.checkForm();
-            if (this.errors.length === 0) {
-                    this.direccionService.editar(this.direccion).then(data =>{
-                    if (data === undefined){
-                        this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al editar', life: 3000});
-                    }else{
-                        if (data.status === 200) {
-                            this.direccion = {
-                                id: null,
-                                calle: null,
-                                cp: null,
-                                estado: null,
-                                municipio: null,
-                                no_exterior: null,
-                                referencia: null,
-                                usuario:{
-                                    id: null,
-                                    nombre: null,
-                                    apellido: null,
-                                    password: null,
-                                    correo: null,
-                                    edad: null
-                                }
-                            };
-                            this.$toast.add({severity: 'info', summary: 'Éxito', detail: 'Usuario Editado Correctamente'});
-                            setTimeout(() => {
-                                this.irMenu();
-                            }, 1800);
+            //if (this.errors.length === 0) {
+            this.direccionService.editar(this.direccion).then(data =>{
+                
+                if (data.status === 200) {
+                    this.direccion = {
+                        id: null,
+                        calle: null,
+                        cp: null,
+                        estado: null,
+                        municipio: null,
+                        no_exterior: null,
+                        referencia: null,
+                        usuario:{
+                            id: null,
+                            nombre: null,
+                            apellido: null,
+                            password: null,
+                            correo: null,
+                            edad: null
                         }
+                    };
+                    console.log(data);
+                    this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
+                    setTimeout(() => {
+                        this.irMenu();
+                    }, 1800);
+                }
+            }).catch(err =>{
+                if(err.response){
+                    if (err.response.status === 404) {
+                        this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.mensaje, life: 4000});
                     }
-                }).catch(err =>{
-                    if(err.response){
-                        console.error(err.response.headers);
-                        console.error(err.response.status);
+                    if (err.response.status === 400) {
+                        this.errors.push(err.response.data.correo);
                     }
-                });
-            }
+                    console.error(err.response.headers);
+                    console.error(err.response.status);
+                }
+            });
+            //}
         },
 
         irMenu(){
