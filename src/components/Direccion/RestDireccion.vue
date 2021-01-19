@@ -5,17 +5,21 @@
         <h2>{{currentUser.nombre + ' ' + currentUser.apellido}}</h2>
     </div>
 
-    <Fieldset class="p-text-center" legend="Usuarios con su dirección">
+    <Fieldset legend="Usuarios con su dirección">
         <Boton 
             :id="selectedDireccion.id"
         />
         
-        <DataTable :value="direcciones" :paginator="true" 
-        :rows="10" :filters="filters" dataKey="id" :rowHover="true" class="p-datatable-customers"
-        v-model:selection="selectedDireccion">
+        <DataTable 
+            :value="direcciones" 
+            :paginator="true" 
+            :rows="10"
+            :filters="filters" dataKey="id"
+            :rowHover="true"
+            v-model:selection="selectedDireccion">
             <template #header>
                 <div class="table-header">
-                    <span class="p-input-icon-left">
+                    <span class="p-input-icon-left p-column-title">
                         <i class="pi pi-search" />
                         <InputText v-model="filters['global']" placeholder="Buscar...." />
                     </span>
@@ -35,17 +39,17 @@
                     {{slotProps.data.correo}}
                 </template>
             </Column>
-            <Column header="Edad" field="edad" filterField="edad" filterMatchMode="contains">
+            <Column header="Edad" field="edad" filterField="edad" filterMatchMode="contains" headerStyle="width: 60px">
                 <template #body="slotProps">
                     {{slotProps.data.edad}}
                 </template>
             </Column>
-            <Column header="CURP" field="curp" filterField="curp" filterMatchMode="contains">
+            <Column header="CURP" field="curp" filterField="curp" filterMatchMode="contains" headerStyle="width: 200px">
                 <template #body="slotProps">
                     {{slotProps.data.curp}}
                 </template>
             </Column>
-            <Column field="fullDireccion" header="Dirección" filterField="fullDireccion" filterMatchMode="contains">
+            <Column field="fullDireccion" header="Dirección" filterField="fullDireccion" filterMatchMode="contains" headerStyle="width: 200px">
                 <template #body="slotProps">
                     {{slotProps.data.fullDireccion}}
                 </template>
