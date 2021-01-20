@@ -31,6 +31,8 @@ export default class DireccionService{
         console.warn(direccion);
         console.warn(direccion.id);
         return axios.put(URL + direccion.id, direccion, {
+            //authHeader(): función auxiliar para agregar JWT al encabezado de autorización HTTP.
+            //es necesario para acceder a recursos protegidos, es decir, la solicitud HTTP necesita un encabezado de autorización.
                                 headers: authHeader()
         });
     }

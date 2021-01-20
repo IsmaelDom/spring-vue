@@ -96,6 +96,7 @@ import Boton from './Boton';
         },
 
         computed: {
+            //Trae los valores del usuario que inicio sesion
             currentUser() {
                 console.log("computed:");
                 console.log(this.$store.state.auth);
@@ -103,6 +104,7 @@ import Boton from './Boton';
             }
         },
 
+        //Se comprueba que el usuario haya iniciado sesión, si no es asi redirige a el login
         mounted() {
             if (!this.currentUser) {
                 this.$router.push('/login');

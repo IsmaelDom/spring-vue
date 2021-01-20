@@ -1,6 +1,7 @@
 import service from '../services/Login';
 
-const user = JSON.parse(localStorage.getItem('user'));
+const user = JSON.parse(localStorage.getItem('user'));//Se obtienen los datos de autenticacion
+//El estado inicial se inicializa con un status y un user dependiendo de loggedIn
 const initialState = user
   ? { status: { loggedIn: true }, user }
   : { status: { loggedIn: false }, user: null };
@@ -8,6 +9,7 @@ const initialState = user
 export const auth = {
   namespaced: true,
   state: initialState,
+  //En actions se declaran los metodos a usar login, logout.
   actions: {
         login({ commit }, user) {
             console.log(user);
@@ -26,7 +28,7 @@ export const auth = {
         service.logout();
         commit('logout');
     },
-
+    //Este metodo no se usa
     register({ commit }, user) {
         return service.guardar(user).then(
             response => {
@@ -41,6 +43,7 @@ export const auth = {
     }
   },
 
+    //Cambia los estados dependiendo si se loggeo correctamente, fallo o cerro sesión
     mutations: {
         loginSuccess(state, user) {
             state.status.loggedIn = true;
@@ -56,11 +59,11 @@ export const auth = {
             state.status.loggedIn = false;
             state.user = null;
         },
-
+        //Este metodo no se usa
         registerSuccess(state) {
             state.status.loggedIn = false;
         },
-
+        //Este metodo no se usa
         registerFailure(state) {
             state.status.loggedIn = false;
         }
