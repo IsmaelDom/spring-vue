@@ -52,10 +52,14 @@
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-4">
-                <span class="p-float-label">
-                    <InputText type="text" id="estado" v-model="direccion.estado"/>
-                    <label for="estado">Estado:</label>
-                </span>
+                <select v-model="selectEstado" class="select">
+                    <option disabled value="" class="select-item">Seleccione un estado</option>
+                    <option v-for="estado in estados" 
+                    :value="estado.estado"
+                    :key="estado.id_estado" class="select-item">
+                        {{ estado.estado }}
+                    </option>
+                </select>
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
@@ -115,6 +119,8 @@ export default {
             errors: [],
             direccionService: null,
             errores: null,
+            estados: [],
+            selectEstado: null,
         }
     },
 
@@ -138,6 +144,8 @@ export default {
             let id = this.$route.params.id;
                 this.direccionService.getById(id).then(data =>{
                     this.direccion = data.data;
+                    this.selectEstado = this.direccion.estado;
+                    console.log(this.selectEstado);
                     console.log(this.direccion)
                 }).catch(err =>{
                     if (err.response) {
@@ -164,16 +172,23 @@ export default {
                             }, 1800);
                         }
                     }else{
-                        this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
+                        console.error(err.message);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                     }
                     
                 });
+
+            this.getEstados();
         }
     },
 
     methods:{
         update(){
             //if (this.errors.length === 0) {
+            if (this.selectEstado != null) {
+                this.direccion.estado = this.selectEstado;
+                console.log(this.direccion.estado);
+            }
             this.direccionService.editar(this.direccion).then(data =>{
                 
                 if (data.status === 200) {
@@ -194,6 +209,7 @@ export default {
                             edad: null
                         }
                     };
+                    this.selectEstado = null;
                     this.errors = [];
                     console.log(data);
                     this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
@@ -215,7 +231,8 @@ export default {
                     console.error(err.response.headers);
                     console.error(err.response.status);
                 }else{
-                    this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
+                    console.error(err.message);
+                    this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                 }
             });
             //}
@@ -223,6 +240,22 @@ export default {
 
         irMenu(){
             this.$router.replace({name: 'Home'})
+        },
+
+        getEstados(){
+            this.direccionService.getEstados().then(data =>{
+                    this.estados = data.data;
+                }).catch(error =>{
+                    if(error.response){
+                        console.error(error.response.status);
+                        if (error.response.status === 401) {
+                            this.logout();
+                        }
+                    }else{
+                        console.error(error.message)
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    }
+                });
         },
 
     }
