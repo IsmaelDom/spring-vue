@@ -51,12 +51,12 @@
                     <label for="no_exterior">No. Exterior:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-4 p-dropdown-trigger">                
-                <select v-model="selectEstado" class="p-dropdown p-dropdown-items" style="width: 500px; height: 40px;">
-                    <option disabled value="" class="p-dropdown-item">Seleccione un estado</option>
+            <div class="p-field p-col-12 p-md-4 select-trigger">                
+                <select v-model="selectEstado" class="select select-items">
+                    <option disabled value="" class="select-item">Seleccione un estado</option>
                     <option v-for="estado in estados" 
                     :value="estado.estado"
-                    :key="estado.id_estado" class="p-dropdown-item">
+                    :key="estado.id_estado" class="select-item">
                         {{ estado.estado }}
                     </option>
                 </select>
@@ -191,30 +191,39 @@ export default {
             this.direccionService.editar(this.direccion).then(data =>{
                 
                 if (data.status === 200) {
-                    this.direccion = {
-                        id: null,
-                        calle: null,
-                        cp: null,
-                        estado: null,
-                        municipio: null,
-                        no_exterior: null,
-                        referencia: null,
-                        usuario:{
-                            id: null,
-                            nombre: null,
-                            apellido: null,
-                            password: null,
-                            correo: null,
-                            edad: null
+                    if (this.currentUser.id === this.direccion.usuario.id) {
+                        if (this.currentUser.correo !== this.direccion.usuario.correo) {
+                            this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
+                            setTimeout(() => {
+                                this.logout();
+                            },1800);
                         }
-                    };
-                    this.selectEstado = null;
-                    this.errors = [];
-                    console.log(data);
-                    this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
-                    setTimeout(() => {
-                        this.irMenu();
-                    }, 1800);
+                    }else{
+                        this.direccion = {
+                            id: null,
+                            calle: null,
+                            cp: null,
+                            estado: null,
+                            municipio: null,
+                            no_exterior: null,
+                            referencia: null,
+                            usuario:{
+                                id: null,
+                                nombre: null,
+                                apellido: null,
+                                password: null,
+                                correo: null,
+                                edad: null
+                            }
+                        };
+                        this.selectEstado = null;
+                        this.errors = [];
+                        console.log(data);
+                        this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
+                        setTimeout(() => {
+                            this.irMenu();
+                        }, 1800);
+                    }
                 }
             }).catch(err =>{
                 this.errors = [];
@@ -224,6 +233,8 @@ export default {
                     }else if (err.response.status === 400) {
                         console.log(err.response.data);
                         this.errors = this.errores.checkForm(err.response.data);
+                    }else if(err.response.status === 401){
+                        this.logout();
                     }else{
                         this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 4000});
                     }
@@ -246,13 +257,22 @@ export default {
                     this.estados = data.data;
                 }).catch(error =>{
                     if(error.response){
-                        console.error(error.response.status);
-                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                        if (error.response.status === 401) {
+                            this.logout();
+                        }else{
+                            console.error(error.response.status);
+                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                        }
                     }else{
                         console.error(error.message)
                         this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                     }
                 });
+        },
+
+        logout(){
+            this.$store.dispatch('auth/logout');
+            this.$router.replace({name: 'Login'});
         },
 
     }
@@ -261,7 +281,7 @@ export default {
 </script>
 
 <style>
-.p-dropdown {
+.select {
     display: inline-flex;
     cursor: pointer;
     position: relative;
@@ -273,22 +293,24 @@ export default {
     border: 1px solid #ced4da;
     transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
     border-radius: 3px;
+    width: 500px;
+    height: 40px;
 }
 
-.p-dropdown-trigger {
+.select-trigger {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
 }
-.p-dropdown-item {
+.select-item {
     cursor: pointer;
     font-weight: normal;
     white-space: nowrap;
     position: relative;
     overflow: hidden;
 }
-.p-dropdown-items {
+.select-items {
     margin: 0;
     padding: 0;
     list-style-type: none;
