@@ -80,7 +80,8 @@ export default {
                                 if (data.status === 200) {
                                     this.$toast.add({severity:'info', summary: 'Información', detail:data.data.exito, life: 3000});
                                     setTimeout(() => {
-                                        this.refresh();
+                                        //this.refresh();
+                                        this.logout();
                                     }, 1800);
                                 }
                              }).catch(error => {
