@@ -16,8 +16,8 @@
                 <div class="p-field p-grid p-formgroup-inline" style="margin-bottom:.5rem">
                     <label for="password" class="p-col-12 p-mb-2 p-md-3">Contraseña:</label>
                     <div class="p-col-12 p-md-6">
-                        <Password id="password" placeholder="Ingrese contraseña" v-model="usuario.password" class="p-invalid"/>
-                        <InlineMessage v-if="passwordError.length">{{passwordError}}</InlineMessage>
+                        <InputText id="password" type="password" aria-describedby="password" placeholder="Ingrese contraseña" v-model="usuario.password" class="p-invalid"/>
+                        <small v-if="!$v.usuario.password.$model" id="password" class="p-error">{{passwordError}}</small>
                     </div>
                 </div>
             </div>
@@ -44,6 +44,7 @@
 
 <script>
 import DireccionService from '../services/DireccionService';
+import { required, email } from '@vuelidate/validators'
 
 export default {
     name: 'Login',
@@ -60,35 +61,27 @@ export default {
             },
         }
     },
+
+    validations() {
+        return {
+            usuario:{
+                correo: { required, email },
+                password: { required },
+            },
+        }
+    },
+
     methods:{
-        checkForm() {
-            this.errors = [];
-            if (!this.usuario.correo || this.usuario.correo.trim().length < 1) {
-                this.errors.push('El correo electrónico es obligatorio.');
-            } else if (!this.validEmail(this.usuario.correo)) {
-                this.errors.push('Ingrese un correo electrónico válido.');
-            }
-
-            if (!this.usuario.password || this.usuario.password.trim().length < 1) {
-                this.errors.push('La contraseña es obligatoria.');
-            }
-
-            if (!this.errors.length) {
-                return true;
-            }
-        },
-
-        validEmail: function (email) {
-            var expresion = /^[a-zA-Z0-9]+[a-zA-Z0-9_.+-]+?@[a-zA-Z0-9-]+\.[a-zA-Z0-9]+[.a-zA-Z]{0,3}$/;
-            return expresion.test(email);
-        },
-
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
 
         handleLogin() {
             //if (this.usuario.correo && this.usuario.password) {
+            console.log(this.$v);
+            console.log(this.$v.usuario.correo.$model);
+            if (!this.$v.$anyError) {
+                //Realiza una solicitud por medio del dispatch
                 this.$store.dispatch('auth/login', this.usuario).then(() => {
                     this.irMenu();
                 },
@@ -120,7 +113,7 @@ export default {
                         }
                     }
                 });
-            //}
+            }
         },
 
         limpiar(){
@@ -130,6 +123,7 @@ export default {
     },
 
     created() {
+        //Si el usuario esta loggeado redirecciona a el menú o index
         if (this.loggedIn) {
             this.direccionService = new DireccionService();
             this.irMenu();
@@ -137,6 +131,7 @@ export default {
     },
 
     computed: {
+        //Comprueba si el usuario ha iniciado sesión por medio del estado utilizando Vuex Store, devuelve true o false
         loggedIn() {
             return this.$store.state.auth.status.loggedIn;
         }
