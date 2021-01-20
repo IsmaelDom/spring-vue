@@ -91,7 +91,8 @@ export default {
                                         this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
                                     }
                                 }else{
-                                    this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
+                                    console.error(error.message);
+                                    this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                                 }
                             });
                         },

@@ -96,11 +96,9 @@ export default {
                     this.error =
                     (error.response && error.response.data && error.response.data.message) ||
                     error.message || error.toString();
-                    console.log(this.error);
-                    console.log(error.response);
                     console.log(error.message);
                     if (error.response === undefined) {
-                        this.$toast.add({severity:'error', summary: 'Error', detail:error.message, life: 3000});
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                     }else{
                         if (error.response.status === 404) {
                             this.correoError = [];
