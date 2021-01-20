@@ -56,8 +56,8 @@
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
-                    <InputText type="text" id="estado" v-model="direccion.estado"/>
-                    <label for="estado">Estado:</label>
+                    <Dropdown v-model="selectEstado" :options="estados" id="estado" optionLabel="estado"/>
+                    <label for="estado">Seleccione un estado:</label>
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-4">
@@ -116,6 +116,8 @@ export default {
             errors: [],
             direccionService: null,
             errores: null,
+            estados: [],
+            selectEstado: null,
         }
     },
 
@@ -130,6 +132,8 @@ export default {
     mounted() {
         if (!this.currentUser) {
             this.$router.push('/login');
+        }else{
+            this.getEstados();
         }
     },
 
@@ -140,7 +144,11 @@ export default {
 
     methods:{
         save(){
+            console.log(this.direccion);
             //if (this.errors.length === 0) {
+            if (this.selectEstado != null) {
+                this.direccion.estado = this.selectEstado.estado;   
+            }
             this.direccionService.guardar(this.direccion).then(data =>{
                 if (data.status === 201) {
                     this.direccion = {
@@ -158,6 +166,7 @@ export default {
                             edad: null
                         }
                     };
+                    this.selectEstado = null;
                     this.errors = [];
                     this.$toast.add({severity: 'info', summary: 'Éxito',detail: data.data.exito, life: 3000});
                 }  
@@ -167,13 +176,14 @@ export default {
                         if (err.response.status === 404) {
                             this.errors = this.errores.checkForm(err.response.data);
                         }else{
-                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 4000});
+                            this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.error, life: 4000});
                         }
                         console.error(err.response.headers);
                         console.error(err.response.status);
                         //this.$toast.add({severity:'error', summary: 'Error', detail:'Ocurrió un error al insertar', life: 3000});
                     }else{
-                        this.$toast.add({severity:'error', summary: 'Error', detail:err.message, life: 3000});
+                        console.error(err.message);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
                     }
                 });
             //}
@@ -185,7 +195,23 @@ export default {
 
         checkForm() {
             this.errors = [];
-        }
+        },
+
+        getEstados(){
+            this.direccionService.getEstados().then(data =>{
+                    this.estados = data.data;
+                }).catch(error =>{
+                    if(error.response){
+                        console.error(error.response.status);
+                        if (error.response.status === 401) {
+                            this.logout();
+                        }
+                    }else{
+                        console.error(error.message)
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    }
+                });
+        },
     }
 }
 </script>
