@@ -51,12 +51,12 @@
                     <label for="no_exterior">No. Exterior:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-4">
-                <select v-model="selectEstado" class="select">
-                    <option disabled value="" class="select-item">Seleccione un estado</option>
+            <div class="p-field p-col-12 p-md-4 p-dropdown-trigger">                
+                <select v-model="selectEstado" class="p-dropdown p-dropdown-items" style="width: 500px; height: 40px;">
+                    <option disabled value="" class="p-dropdown-item">Seleccione un estado</option>
                     <option v-for="estado in estados" 
                     :value="estado.estado"
-                    :key="estado.id_estado" class="select-item">
+                    :key="estado.id_estado" class="p-dropdown-item">
                         {{ estado.estado }}
                     </option>
                 </select>
@@ -264,4 +264,37 @@ export default {
 </script>
 
 <style>
+.p-dropdown {
+    display: inline-flex;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    font-size: 1rem;
+    color: #495057;
+    padding: 0.5rem 0.5rem;
+    border: 1px solid #ced4da;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s, box-shadow 0.2s;
+    border-radius: 3px;
+}
+
+.p-dropdown-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.p-dropdown-item {
+    cursor: pointer;
+    font-weight: normal;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+}
+.p-dropdown-items {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    cursor: pointer;
+}
 </style>
