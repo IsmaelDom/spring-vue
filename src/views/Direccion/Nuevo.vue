@@ -92,6 +92,7 @@
 <script>
 import DireccionService from '../../services/DireccionService';
 import Errores from '../../errors/errores.js';
+import { required } from '@vuelidate/validators'
 
 export default {
     name: 'Nuevo',
@@ -118,6 +119,27 @@ export default {
             errores: null,
             estados: [],
             selectEstado: null,
+        }
+    },
+
+    validations () {
+        return {
+            direccion: {
+                calle: { required },
+                cp: { required },
+                estado: { required },
+                municipio: { required },
+                no_exterior: { required },
+                referencia: { required },
+                usuario:{
+                        nombre: { required },
+                        apellido: { required },
+                        password: { required },
+                        correo: { required },
+                        edad: { required },
+                        curp: { required },
+                },
+            }
         }
     },
 
@@ -192,20 +214,14 @@ export default {
         irMenu(){
             this.$router.replace({name: 'Home'})
         },
-
-        checkForm() {
-            this.errors = [];
-        },
-
+        
         getEstados(){
             this.direccionService.getEstados().then(data =>{
                     this.estados = data.data;
                 }).catch(error =>{
                     if(error.response){
-                        console.error(error.response.status);
-                        if (error.response.status === 401) {
-                            this.logout();
-                        }
+                        console.error(error.response);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
                     }else{
                         console.error(error.message)
                         this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
