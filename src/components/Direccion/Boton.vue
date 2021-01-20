@@ -78,7 +78,7 @@ export default {
                         accept: () => {
                              this.direccionService.eliminar(this.id).then(data =>{
                                 if (data.status === 200) {
-                                    this.$toast.add({severity:'info', summary: 'Información', detail:data.data.mensaje, life: 3000});
+                                    this.$toast.add({severity:'info', summary: 'Información', detail:data.data.exito, life: 3000});
                                     setTimeout(() => {
                                         this.refresh();
                                     }, 1800);
@@ -86,9 +86,13 @@ export default {
                              }).catch(error => {
                                 if(error.response){
                                     if (error.response.status) {
-                                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.mensaje, life: 4000});
+                                        if (error.response.status === 404) {
+                                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.error, life: 4000});   
+                                        }else{
+                                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 4000});   
+                                        }
                                     }else{
-                                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                                        console.error(error.message);
                                     }
                                 }else{
                                     console.error(error.message);
