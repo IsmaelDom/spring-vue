@@ -36,9 +36,8 @@ export default class DireccionService{
     }
 
     eliminar(id){
-        console.log("Método eliminar(), id:");
-        console.warn(id);
-        return axios.delete(URL + id, {
+        console.warn("Método eliminar(), id: " + id);
+        return axios.delete(URL + 'delete/' + id, {
                                 headers: authHeader()
 
         });
