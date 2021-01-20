@@ -121,12 +121,16 @@ import Boton from './Boton';
                 this.direccionService.getAll().then(data =>{
                     this.direcciones = data.data;
                 }).catch(error =>{
-                    console.error(error.response.status);
-                    if (error.response.status === 401) {
-                        this.logout();
-                    }
-                    console.error(error.message)
-                    this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    if (error.response) {
+                        if (error.response.status === 401) {
+                            this.logout();
+                        }else{
+                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                        }
+                    }else{
+                        console.error(error.message)
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    }                    
                 });
             },
 
