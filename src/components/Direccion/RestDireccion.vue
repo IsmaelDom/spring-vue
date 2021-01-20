@@ -138,7 +138,7 @@ import Boton from './Boton';
 
             logout(){
                 this.$store.dispatch('auth/logout');
-                this.$router.push({name: 'Login'});
+                this.$router.replace({name: 'Login'});
             },
         },
     }

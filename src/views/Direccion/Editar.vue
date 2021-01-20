@@ -145,8 +145,7 @@ export default {
                 this.direccionService.getById(id).then(data =>{
                     this.direccion = data.data;
                     this.selectEstado = this.direccion.estado;
-                    console.log(this.selectEstado);
-                    console.log(this.direccion)
+                    
                 }).catch(err =>{
                     if (err.response) {
                         console.error(err.response);
@@ -248,9 +247,7 @@ export default {
                 }).catch(error =>{
                     if(error.response){
                         console.error(error.response.status);
-                        if (error.response.status === 401) {
-                            this.logout();
-                        }
+                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
                     }else{
                         console.error(error.message)
                         this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
