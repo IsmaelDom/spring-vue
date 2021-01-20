@@ -2,6 +2,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 //import Vuex from 'vuex'
 import store from './store';
+import router from './router'
+import { VuelidatePlugin } from '@vuelidate/core'
+
 import PrimeVue from 'primevue/config';
 import InputNumber from 'primevue/inputnumber';
 import DataTable from 'primevue/datatable';
@@ -12,7 +15,6 @@ import Menubar from 'primevue/menubar';
 import Boton from './components/Direccion/Boton.vue';
 import Tooltip from 'primevue/tooltip';
 import Button from 'primevue/button';
-import router from './router'
 import Card from 'primevue/card';
 import Panel from 'primevue/panel';
 import Password from 'primevue/password';
@@ -35,6 +37,7 @@ const app = createApp(App).use(store).use(router);
 app.use(PrimeVue);
 app.use(ToastService);
 app.use(ConfirmationService);
+app.use(VuelidatePlugin);
 //app.use(Vuex);
 //app.use(store);
 
