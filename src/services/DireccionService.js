@@ -2,6 +2,7 @@ import axios from 'axios';
 import authHeader from './Header';
 
 const URL = 'http://localhost:8080/direcciones/';
+const URLESTADOS = 'http://localhost:8080/estados';
 export default class DireccionService{
     getAll(){
         console.log("Método getAll()");
@@ -40,6 +41,13 @@ export default class DireccionService{
         return axios.delete(URL + id, {
                                 headers: authHeader()
 
+        });
+    }
+
+    getEstados(){
+        console.log("Método getEstados()");
+        return axios.get(URLESTADOS, {
+            headers: authHeader()
         });
     }
 }
