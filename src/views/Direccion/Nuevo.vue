@@ -56,14 +56,14 @@
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
-                    <Dropdown v-model="selectEstado" :options="estados" id="estado" optionLabel="estado"/>
+                    <Dropdown v-model="selectEstado" @change="getEstadosById(selectEstado)" :options="estados" id="estado" optionLabel="estado"/>
                     <label for="estado">Seleccione un estado:</label>
                 </span>
             </div>
-            <div class="p-field p-col-12 p-md-4">
+            <div class="p-field p-col-12 p-md-4" v-if="selectEstado != null">
                 <span class="p-float-label">
-                    <InputText type="text" id="municipio" v-model="direccion.municipio"/>
-                    <label for="municipio">Municipio:</label>
+                    <Dropdown v-model="selectMunicipio" :options="municipios" id="municipio" optionLabel="municipio"/>
+                    <label for="municipio">Seleccione un municipio:</label>
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-4">
@@ -119,6 +119,8 @@ export default {
             errores: null,
             estados: [],
             selectEstado: null,
+            selectMunicipio: null,
+            municipios: [],
         }
     },
 
@@ -169,7 +171,11 @@ export default {
             console.log(this.direccion);
             //if (this.errors.length === 0) {
             if (this.selectEstado != null) {
-                this.direccion.estado = this.selectEstado.estado;   
+                this.direccion.estado = this.selectEstado.estado;
+            }
+            if (this.selectMunicipio != null) {
+                this.direccion.municipio = this.selectMunicipio.municipio;
+                console.log(this.direccion.municipio);
             }
             this.direccionService.guardar(this.direccion).then(data =>{
                 if (data.status === 201) {
@@ -189,6 +195,7 @@ export default {
                         }
                     };
                     this.selectEstado = null;
+                    this.selectMunicipio = null;
                     this.errors = [];
                     this.$toast.add({severity: 'info', summary: 'Éxito',detail: data.data.exito, life: 3000});
                 }  
@@ -218,6 +225,25 @@ export default {
         getEstados(){
             this.direccionService.getEstados().then(data =>{
                     this.estados = data.data;
+                }).catch(error =>{
+                    if(error.response){
+                        console.error(error.response);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                    }else{
+                        console.error(error.message)
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    }
+                });
+        },
+
+        getEstadosById(selectEstado){
+            console.info("Método getEstadosById");
+            this.municipios = [];
+            this.selectMunicipio = null;
+            this.direccion.municipio = null;
+            let id = selectEstado.id;
+            this.direccionService.getEstadosById(id).then(data =>{
+                    this.municipios = data.data;
                 }).catch(error =>{
                     if(error.response){
                         console.error(error.response);

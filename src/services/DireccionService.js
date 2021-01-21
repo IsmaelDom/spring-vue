@@ -51,4 +51,11 @@ export default class DireccionService{
             headers: authHeader()
         });
     }
+
+    getEstadosById(id){
+        console.log("Método getEstadosById()");
+        return axios.get(URLESTADOS + '/' + id, {
+            headers: authHeader()
+        });
+    }
 }
