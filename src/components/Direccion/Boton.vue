@@ -50,6 +50,12 @@ export default {
             }
         },
 
+        computed: {
+            currentUser() {
+                return this.$store.state.auth.user;
+            }
+        },
+
         created() {
             this.direccionService = new DireccionService();
         },
@@ -69,7 +75,6 @@ export default {
 
             delete(){
                 if (this.id != undefined || this.id != null) {
-                    console.log(this.id);
                     this.$confirm.require({
                         message: '¿Desea eliminar este usuario?',
                         header: 'Confirmar eliminación',
@@ -78,11 +83,17 @@ export default {
                         accept: () => {
                              this.direccionService.eliminar(this.id).then(data =>{
                                 if (data.status === 200) {
-                                    this.$toast.add({severity:'info', summary: 'Información', detail:data.data.exito, life: 3000});
-                                    setTimeout(() => {
-                                        //this.refresh();
-                                        this.logout();
-                                    }, 1800);
+                                    if (this.currentUser.id == this.id) {
+                                        this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito, life: 3000});
+                                        setTimeout(() => {
+                                            this.logout();
+                                        },1800);                                        
+                                    }else{
+                                        this.$toast.add({severity:'info', summary: 'Información', detail:data.data.exito, life: 3000});
+                                        setTimeout(() => {
+                                            this.refresh();
+                                        }, 1800);
+                                    }
                                 }
                              }).catch(error => {
                                 if(error.response){
