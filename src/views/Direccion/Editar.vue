@@ -202,21 +202,25 @@ export default {
             this.direccionService.editar(this.direccion).then(data =>{
                 
                 if (data.status === 200) {
-                    this.limpiar();
-                    if (this.currentUser.id === this.direccion.usuario.id) {
+                    if (this.currentUser.id == this.direccion.usuario.id) {
                         if (this.currentUser.correo !== this.direccion.usuario.correo) {
+                            console.warn("Cambio el correo, se cierra sesión");
+                            this.limpiar();
                             this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
                             setTimeout(() => {
                                 this.logout();
                             },1800);
                         }else{
                             this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
+                            this.limpiar();
+                            console.warn("No cambio el correo, retorna a menú");
                             setTimeout(() => {
                                 this.irMenu();
                             }, 1800);
                         }
                     }else{
-                        console.log(data);
+                        this.limpiar();
+                        console.warn("No se edita el usuario logueado.");
                         this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
                         setTimeout(() => {
                             this.irMenu();
