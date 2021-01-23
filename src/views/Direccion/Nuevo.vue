@@ -56,13 +56,13 @@
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
-                    <Dropdown v-model="selectEstado" :filter="true" @change="getEstadosById(selectEstado)" :options="estados" id="estado" optionLabel="estado"/>
+                    <Dropdown v-model="selectEstado" :filter="true" :showClear="true" @change="getEstadosById(selectEstado)" :options="estados" id="estado" optionLabel="estado"/>
                     <label for="estado">Seleccione un estado:</label>
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-4" v-if="selectEstado != null">
                 <span class="p-float-label">
-                    <Dropdown v-model="selectMunicipio" :filter="true" :options="municipios" id="municipio" optionLabel="municipio"/>
+                    <Dropdown v-model="selectMunicipio" :filter="true" :showClear="true" :options="municipios" id="municipio" optionLabel="municipio"/>
                     <label for="municipio">Seleccione un municipio:</label>
                 </span>
             </div>

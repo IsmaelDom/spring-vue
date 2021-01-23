@@ -51,21 +51,29 @@
                     <label for="no_exterior">No. Exterior:</label>
                 </span>
             </div>
+            <!-- Falta ver como mandar un objeto en lugar de solo el estado -->
             <div class="p-field p-col-12 p-md-4 select-trigger">                
-                <select v-model="selectEstado" class="select select-items">
+                <select v-model="selectEstado" @change="getEstadosById(selectEstado)" class="select select-items">
                     <option disabled value="" class="select-item">Seleccione un estado</option>
                     <option v-for="estado in estados" 
                     :value="estado.estado"
-                    :key="estado.id_estado" class="select-item">
+                    :key="estado.id" class="select-item">
                         {{ estado.estado }}
                     </option>
                 </select>
             </div>
-            <div class="p-field p-col-12 p-md-4">
-                <span class="p-float-label">
-                    <InputText type="text" id="municipio" v-model="direccion.municipio"/>
-                    <label for="municipio">Municipio:</label>
-                </span>
+            <!--<div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
+               <select v-model="selectMunicipio" class="select select-items">
+                    <option disabled value="" class="select-item">Seleccione un municipio</option>
+                    <option v-for="municipio in municipios" 
+                    :value="municipio.municipio"
+                    :key="municipio.id" class="select-item">
+                        {{ municipio.municipio }}
+                    </option>  @change="getEstadosById(selectEstado)"
+                </select>
+            </div>-->
+            <div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
+                <Dropdown v-model="selectMunicipio" :options="municipios" @change="mensaje()" optionLabel="municipio" placeholder="Seleccione un municipio" />
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
@@ -121,6 +129,8 @@ export default {
             errores: null,
             estados: [],
             selectEstado: null,
+            municipios: [],
+            selectMunicipio: null,
         }
     },
 
@@ -141,11 +151,13 @@ export default {
         if (!this.currentUser) {
             this.$router.push('/login');
         }else{
-            let id = this.$route.params.id;
+            var id = this.$route.params.id;
                 this.direccionService.getById(id).then(data =>{
                     this.direccion = data.data;
                     this.selectEstado = this.direccion.estado;
-                    
+                    this.getEstados();
+                    this.selectMunicipio = this.direccion.municipio;
+                    console.log("Mounted " + this.selectMunicipio);
                 }).catch(err =>{
                     if (err.response) {
                         console.error(err.response);
@@ -176,8 +188,6 @@ export default {
                     }
                     
                 });
-
-            this.getEstados();
         }
     },
 
@@ -188,42 +198,34 @@ export default {
                 this.direccion.estado = this.selectEstado;
                 console.log(this.direccion.estado);
             }
+            if (this.selectMunicipio != null) {
+                this.direccion.municipio = this.selectMunicipio;
+                console.log(this.direccion.municipio);
+            }
             this.direccionService.editar(this.direccion).then(data =>{
                 
                 if (data.status === 200) {
+                    this.limpiar();
                     if (this.currentUser.id === this.direccion.usuario.id) {
                         if (this.currentUser.correo !== this.direccion.usuario.correo) {
                             this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
                             setTimeout(() => {
                                 this.logout();
                             },1800);
+                        }else{
+                            this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
+                            setTimeout(() => {
+                                this.irMenu();
+                            }, 1800);
                         }
                     }else{
-                        this.direccion = {
-                            id: null,
-                            calle: null,
-                            cp: null,
-                            estado: null,
-                            municipio: null,
-                            no_exterior: null,
-                            referencia: null,
-                            usuario:{
-                                id: null,
-                                nombre: null,
-                                apellido: null,
-                                password: null,
-                                correo: null,
-                                edad: null
-                            }
-                        };
-                        this.selectEstado = null;
-                        this.errors = [];
                         console.log(data);
                         this.$toast.add({severity: 'info', summary: 'Éxito', detail: data.data.exito});
                         setTimeout(() => {
                             this.irMenu();
                         }, 1800);
                     }
+                    //}
                 }
             }).catch(err =>{
                 this.errors = [];
@@ -236,10 +238,8 @@ export default {
                     }else if(err.response.status === 401){
                         this.logout();
                     }else{
-                        this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data, life: 4000});
+                        this.$toast.add({severity:'error', summary: 'Error', detail:err.response.data.error, life: 4000});
                     }
-                    console.error(err.response.headers);
-                    console.error(err.response.status);
                 }else{
                     console.error(err.message);
                     this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
@@ -254,14 +254,27 @@ export default {
 
         getEstados(){
             this.direccionService.getEstados().then(data =>{
-                    this.estados = data.data;
+                    this.estados = data.data;   
+                    //Se recorre a la variables que trae los estados               
+                    /*this.estados.forEach(estado => {
+                        if (estado.estado == this.selectEstado) {
+                            this.getEstadosById(estado);
+                        }
+                    });*/
+                    //se cambia forEach por some para que se detenga al entrar a la condición.
+                    this.estados.some(estado =>{
+                        if (estado.estado == this.selectEstado) {
+                            this.getEstadosById(estado);
+                            return true;
+                        }
+                    });
                 }).catch(error =>{
                     if(error.response){
                         if (error.response.status === 401) {
                             this.logout();
                         }else{
                             console.error(error.response.status);
-                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                            this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.error, life: 3000});
                         }
                     }else{
                         console.error(error.message)
@@ -274,6 +287,74 @@ export default {
             this.$store.dispatch('auth/logout');
             this.$router.replace({name: 'Login'});
         },
+
+        getEstadosById(selectEstado){
+            console.info("Método getEstadosById");
+            console.log(selectEstado);
+            this.municipios = [];
+            var id;// = selectEstado.id;
+            console.warn(this.selectEstado);
+            if (selectEstado.id === undefined) {
+                this.estados.some(estado =>{
+                    if (estado.estado == selectEstado) {
+                        id = estado.id;
+                        console.log("Entro a if: " + estado.id);
+                        return true;
+                    }
+                });
+                console.log(id);
+            }else{
+                console.log(selectEstado.id);
+                id = selectEstado.id;
+            }
+            this.direccionService.getEstadosById(id).then(data =>{
+                    this.municipios = data.data;
+                }).catch(error =>{
+                    if(error.response){
+                        console.error(error.response);
+                        this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data.error, life: 3000});
+                    }else{
+                        console.error(error.message)
+                        this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                    }
+                });
+        },
+
+        limpiar(){
+            this.direccion = {
+                        id: null,
+                        calle: null,
+                        cp: null,
+                        estado: null,
+                        municipio: null,
+                        no_exterior: null,
+                        referencia: null,
+                        usuario:{
+                            id: null,
+                            nombre: null,
+                            apellido: null,
+                            password: null,
+                            correo: null,
+                            edad: null
+                        }
+                    };
+                    this.selectEstado = null;
+                    this.errors = [];
+                    this.selectMunicipio = null;
+        },
+
+        recorrerEstados(){
+            this.estados.some(estado =>{
+                if (estado.estado == this.selectEstado) {
+                    this.getEstadosById(estado);
+                    return true;
+                }
+            });
+        },
+
+        mensaje(){
+            console.log(this.selectMunicipio);
+        }
 
     }
     
