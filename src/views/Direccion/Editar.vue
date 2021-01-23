@@ -62,19 +62,19 @@
                     </option>
                 </select>
             </div>
-            <!--<div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
+            <div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
                <select v-model="selectMunicipio" class="select select-items">
                     <option disabled value="" class="select-item">Seleccione un municipio</option>
                     <option v-for="municipio in municipios" 
                     :value="municipio.municipio"
                     :key="municipio.id" class="select-item">
                         {{ municipio.municipio }}
-                    </option>  @change="getEstadosById(selectEstado)"
+                    </option>
                 </select>
-            </div>-->
-            <div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
-                <Dropdown v-model="selectMunicipio" :options="municipios" @change="mensaje()" optionLabel="municipio" placeholder="Seleccione un municipio" />
             </div>
+            <!--<div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
+                <Dropdown v-model="selectMunicipio" :options="municipios" @change="mensaje()" optionLabel="municipio" placeholder="Seleccione un municipio" />
+            </div>-->
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
                     <InputText type="text" id="referencia" v-model="direccion.referencia"/>
@@ -289,22 +289,17 @@ export default {
         },
 
         getEstadosById(selectEstado){
-            console.info("Método getEstadosById");
-            console.log(selectEstado);
             this.municipios = [];
-            var id;// = selectEstado.id;
-            console.warn(this.selectEstado);
+            var id;
             if (selectEstado.id === undefined) {
                 this.estados.some(estado =>{
                     if (estado.estado == selectEstado) {
-                        id = estado.id;
+                        id = estado.id;                        
                         console.log("Entro a if: " + estado.id);
                         return true;
                     }
                 });
-                console.log(id);
             }else{
-                console.log(selectEstado.id);
                 id = selectEstado.id;
             }
             this.direccionService.getEstadosById(id).then(data =>{
@@ -341,15 +336,6 @@ export default {
                     this.selectEstado = null;
                     this.errors = [];
                     this.selectMunicipio = null;
-        },
-
-        recorrerEstados(){
-            this.estados.some(estado =>{
-                if (estado.estado == this.selectEstado) {
-                    this.getEstadosById(estado);
-                    return true;
-                }
-            });
         },
 
         mensaje(){
