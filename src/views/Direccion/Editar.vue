@@ -136,8 +136,6 @@ export default {
 
     computed: {
         currentUser() {
-            console.log("computed:");
-            console.log(this.$store.state.auth);
             return this.$store.state.auth.user;
         }
     },
@@ -156,8 +154,7 @@ export default {
                     this.direccion = data.data;
                     this.selectEstado = this.direccion.estado;
                     this.getEstados();
-                    this.selectMunicipio = this.direccion.municipio;
-                    console.log("Mounted " + this.selectMunicipio);
+                    this.selectMunicipio = this.direccion.municipio; 
                 }).catch(err =>{
                     if (err.response) {
                         console.error(err.response);
@@ -294,7 +291,7 @@ export default {
             if (selectEstado.id === undefined) {
                 this.estados.some(estado =>{
                     if (estado.estado == selectEstado) {
-                        id = estado.id;                        
+                        id = estado.id; 
                         console.log("Entro a if: " + estado.id);
                         return true;
                     }
@@ -302,8 +299,13 @@ export default {
             }else{
                 id = selectEstado.id;
             }
+            
+            if (selectEstado.estado !== this.direccion.estado) {
+                this.selectMunicipio = null;
+                this.direccion.municipio = null;
+            }
             this.direccionService.getEstadosById(id).then(data =>{
-                    this.municipios = data.data;
+                    this.municipios = data.data;               
                 }).catch(error =>{
                     if(error.response){
                         console.error(error.response);
@@ -336,12 +338,9 @@ export default {
                     this.selectEstado = null;
                     this.errors = [];
                     this.selectMunicipio = null;
+                    this.municipios = [];
+                    this.estados = [];
         },
-
-        mensaje(){
-            console.log(this.selectMunicipio);
-        }
-
     }
     
 }
