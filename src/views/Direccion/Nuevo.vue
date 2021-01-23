@@ -56,13 +56,13 @@
             </div>
             <div class="p-field p-col-12 p-md-4">
                 <span class="p-float-label">
-                    <Dropdown v-model="selectEstado" @change="getEstadosById(selectEstado)" :options="estados" id="estado" optionLabel="estado"/>
+                    <Dropdown v-model="selectEstado" :filter="true" @change="getEstadosById(selectEstado)" :options="estados" id="estado" optionLabel="estado"/>
                     <label for="estado">Seleccione un estado:</label>
                 </span>
             </div>
             <div class="p-field p-col-12 p-md-4" v-if="selectEstado != null">
                 <span class="p-float-label">
-                    <Dropdown v-model="selectMunicipio" :options="municipios" id="municipio" optionLabel="municipio"/>
+                    <Dropdown v-model="selectMunicipio" :filter="true" :options="municipios" id="municipio" optionLabel="municipio"/>
                     <label for="municipio">Seleccione un municipio:</label>
                 </span>
             </div>
@@ -241,6 +241,7 @@ export default {
             this.municipios = [];
             this.selectMunicipio = null;
             this.direccion.municipio = null;
+            console.log(selectEstado);
             let id = selectEstado.id;
             this.direccionService.getEstadosById(id).then(data =>{
                     this.municipios = data.data;
