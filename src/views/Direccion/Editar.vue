@@ -72,6 +72,15 @@
                     </option>
                 </select>
             </div>
+            <!--<div class="p-field p-col-12 p-md-4 select-trigger">
+                <AutoComplete v-model="selectEstado" @complete="searchEstados($event)" :suggestions="selectEstado" dropdownMode="current" :dropdown="true" placeholder="Seleccione un estado">
+                    <template #item="slotProps">
+                        <div class="country-item">
+                            <div>{{slotProps.estados.estado}}</div>
+                        </div>
+                    </template>
+                </AutoComplete>
+            </div>-->
             <!--<div class="p-field p-col-12 p-md-4 select-trigger" v-if="selectEstado != null">
                 <Dropdown v-model="selectMunicipio" :options="municipios" @change="mensaje()" optionLabel="municipio" placeholder="Seleccione un municipio" />
             </div>-->
@@ -320,6 +329,11 @@ export default {
                     }
                 });
         },
+
+        /*searchEstados(event) {
+            console.log(event);
+            this.getEstados();
+		},*/
 
         limpiar(){
             this.direccion = {

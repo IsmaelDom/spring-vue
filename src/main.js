@@ -25,6 +25,7 @@ import ConfirmDialog from 'primevue/confirmdialog';
 import Message from 'primevue/message';
 import InlineMessage from 'primevue/inlinemessage';
 import Dropdown from 'primevue/dropdown';
+import AutoComplete from 'primevue/autocomplete';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -60,5 +61,6 @@ app.component('ConfirmDialog', ConfirmDialog);
 app.component('Message', Message);
 app.component('InlineMessage', InlineMessage);
 app.component('Dropdown', Dropdown);
+app.component('AutoComplete', AutoComplete);
 
 app.mount('#app');
