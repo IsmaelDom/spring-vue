@@ -16,6 +16,8 @@
             :rows="10"
             :filters="filters" dataKey="id"
             :rowHover="true"
+            :loading="loading"
+            :resizableColumns="true" columnResizeMode="fit"
             v-model:selection="selectedDireccion">
             <template #header>
                 <div class="table-header">
@@ -92,6 +94,7 @@ import Boton from './Boton';
                     //fullName: null,
                 },
                 direccionService: null,
+                loading: false,
             }
         },
 
@@ -110,7 +113,10 @@ import Boton from './Boton';
                 this.$router.push('/login');
             }else{
                 console.warn(this.currentUser);
-                this.getDirecciones();
+                this.loading = true;
+                setTimeout(() => {
+                    this.getDirecciones();
+                },2000);
             }
         },
         
@@ -122,16 +128,19 @@ import Boton from './Boton';
             getDirecciones(){
                 this.direccionService.getAll().then(data =>{
                     this.direcciones = data.data;
+                    this.loading = false;
                 }).catch(error =>{
                     if (error.response) {
                         if (error.response.status === 401) {
                             this.logout();
                         }else{
                             this.$toast.add({severity:'error', summary: 'Error', detail:error.response.data, life: 3000});
+                            this.loading = false;
                         }
                     }else{
                         console.error(error.message)
                         this.$toast.add({severity:'error', summary: 'Error', detail:'No se pudo conectar con el servidor', life: 3000});
+                        this.loading = false;
                     }                    
                 });
             },
